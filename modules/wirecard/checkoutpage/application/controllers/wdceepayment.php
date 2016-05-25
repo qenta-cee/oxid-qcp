@@ -44,7 +44,7 @@ class wdceepayment extends oxUBase
     protected static $_PAYMENT_WIRECARD_CHECKOUT_URL = 'checkout.wirecard.com';
     protected static $_PAYMENT_INIT_URL = 'https://checkout.wirecard.com/page/init-server.php';
 
-    protected static $_PLUGIN_VERSION = '2.6.2';
+    protected static $_PLUGIN_VERSION = '2.6.3';
 
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
@@ -1037,10 +1037,15 @@ class wdceepayment extends oxUBase
                 'vat' => $oOrder->oxorder__oxgiftcardvat->rawValue,
                 'price' => $oOrder->oxorder__oxgiftcardcost->rawValue
             ),
+            'discount' => array(
+                'description' => $oLang->translateString('DISCOUNT', $iLangId),
+                'vat' => 0,
+                'price' => $oOrder->oxorder__oxdiscount->rawValue * -1
+            ),
         );
 
         foreach ($aAdditionalCosts as $type => $data) {
-            if ($data['price'] > 0) {
+            if ($data['price'] != 0) {
                 $basketItemsCount++;
                 $netTaxAdditional = number_format($data['price'] * ($data['vat'] / 100), 2);
                 $netPriceAdditional = number_format($data['price'] - $netTaxAdditional, 2);
