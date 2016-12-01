@@ -44,7 +44,7 @@ class wdceepayment extends oxUBase
     protected static $_PAYMENT_WIRECARD_CHECKOUT_URL = 'checkout.wirecard.com';
     protected static $_PAYMENT_INIT_URL = 'https://checkout.wirecard.com/page/init-server.php';
 
-    protected static $_PLUGIN_VERSION = '2.6.3';
+    protected static $_PLUGIN_VERSION = '2.7.0';
 
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
@@ -327,6 +327,9 @@ class wdceepayment extends oxUBase
 
         $request = Array();
 
+
+        oxRegistry::getUtils()->writeToLog(__METHOD__. ': init payment with ' . $paymenttype . "\n", self::$_LOG_FILE_NAME);
+
         // WCP RequestParameters
         $request['customerId'] = $this->getCustomerId();
         $request['language'] = oxRegistry::getLang()->getLanguageAbbr();
@@ -499,22 +502,21 @@ class wdceepayment extends oxUBase
         $request['sess_challenge'] = oxRegistry::getSession()->getVariable('sess_challenge');
 
         $requestFingerprintOrder = 'secret';
-        $requestFingerprintSeed = $this->getSecret();
+        $tempArray = array('secret' => $this->getSecret());
 
         foreach ($request as $key => $value) {
-            if (empty($value) && '0' != $value) {
-                unset($request[$key]);
-                continue;
-            }
-            $value = trim($value);
-
-            $requestFingerprintSeed .= htmlspecialchars_decode($value, ENT_QUOTES);
             $requestFingerprintOrder .= ',' . $key;
+            $tempArray[(string)$key] = (string)$value;
         }
 
         $requestFingerprintOrder .= ',requestFingerprintOrder';
-        $requestFingerprintSeed .= $requestFingerprintOrder;
-        $requestFingerprint = hash_hmac('sha512', $requestFingerprintSeed, $this->getSecret());
+        $tempArray['requestFingerprintOrder'] = $requestFingerprintOrder;
+
+        $hash = hash_init('sha512', HASH_HMAC, $this->getSecret());
+        foreach ($tempArray as $key => $value) {
+            hash_update($hash, $value);
+        }
+        $requestFingerprint = hash_final($hash);
         $request['requestFingerprintOrder'] = $requestFingerprintOrder;
         $request['requestFingerprint'] = $requestFingerprint;
 
@@ -635,14 +637,14 @@ class wdceepayment extends oxUBase
 
     protected function _getResponseFingerprintSeed($oOrder)
     {
+        $tempArray = [];
         $responseFingerprintKeys = explode(',', $_POST['responseFingerprintOrder']);
-        $responseFingerprintSeed = '';
         foreach ($responseFingerprintKeys as $key) {
             if (strtolower($key) == 'secret') {
-                $responseFingerprintSeed .= $this->getConfig()->getConfigParam('sWcpSecret');
+                $tempArray[(string)$key] = $this->getSecret();
             } else {
                 if (isset($_POST[$key])) {
-                    $responseFingerprintSeed .= $this->_prepareValueForFingerprint($_POST[$key]);
+                    $tempArray[(string)$key] = $this->_prepareValueForFingerprint($_POST[$key]);
                 } else {
                     if ($this->_isPaid($oOrder)) {
                         $this->_wcpConfirmLogging('Order has allready been paid.');
@@ -661,6 +663,14 @@ class wdceepayment extends oxUBase
                 }
             }
         }
+
+        $hash = hash_init('sha512', HASH_HMAC, $this->getSecret());
+
+        foreach ($tempArray as $key => $value) {
+            hash_update($hash, $value);
+        }
+
+        $responseFingerprintSeed = hash_final($hash);
 
         return array($responseFingerprintSeed, '');
     }
@@ -693,7 +703,7 @@ class wdceepayment extends oxUBase
                         return $error;
                     }
                 }
-                if (strcasecmp(hash_hmac('sha512', $seed, $this->getSecret()), $_POST['responseFingerprint']) == 0) {
+                if (strcmp($seed, $_POST['responseFingerprint']) == 0) {
                     if (!$this->_isPaid($oOrder)) {
                         $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PAID');
 
