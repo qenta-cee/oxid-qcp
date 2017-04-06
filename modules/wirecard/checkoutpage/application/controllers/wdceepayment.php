@@ -796,7 +796,7 @@ class wdceepayment extends oxUBase
                         }
                     }
 
-                    if (strcasecmp(hash_hmac('sha512', $seed, $this->getSecret()), $_POST['responseFingerprint']) == 0) {
+                    if (strcmp($seed, $_POST['responseFingerprint']) == 0) {
                         if (!$this->_isPaid($oOrder)) {
                             $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PENDING');
 
