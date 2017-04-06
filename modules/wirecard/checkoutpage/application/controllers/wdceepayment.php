@@ -705,7 +705,7 @@ class wdceepayment extends oxUBase
                         return $error;
                     }
                 }
-                if (strcmp($seed, $_POST['responseFingerprint']) == 0) {
+                if (strcasecmp($seed, $_POST['responseFingerprint']) == 0) {
                     if (!$this->_isPaid($oOrder)) {
                         $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PAID');
 
@@ -796,7 +796,7 @@ class wdceepayment extends oxUBase
                         }
                     }
 
-                    if (strcmp($seed, $_POST['responseFingerprint']) == 0) {
+                    if (strcasecmp($seed, $_POST['responseFingerprint']) == 0) {
                         if (!$this->_isPaid($oOrder)) {
                             $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PENDING');
 
