@@ -44,7 +44,7 @@ class wdceepayment extends oxUBase
     protected static $_PAYMENT_WIRECARD_CHECKOUT_URL = 'checkout.wirecard.com';
     protected static $_PAYMENT_INIT_URL = 'https://checkout.wirecard.com/page/init-server.php';
 
-    protected static $_PLUGIN_VERSION = '2.7.0';
+    protected static $_PLUGIN_VERSION = '2.7.1';
 
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
@@ -501,12 +501,14 @@ class wdceepayment extends oxUBase
 
         $request['sess_challenge'] = oxRegistry::getSession()->getVariable('sess_challenge');
 
+	    $request = array_map('trim', $request);
+
         $requestFingerprintOrder = 'secret';
         $tempArray = array('secret' => $this->getSecret());
 
         foreach ($request as $key => $value) {
             $requestFingerprintOrder .= ',' . $key;
-            $tempArray[(string)$key] = (string)$value;
+            $tempArray[(string)$key] = $value;
         }
 
         $requestFingerprintOrder .= ',requestFingerprintOrder';
@@ -703,7 +705,7 @@ class wdceepayment extends oxUBase
                         return $error;
                     }
                 }
-                if (strcmp($seed, $_POST['responseFingerprint']) == 0) {
+                if (strcasecmp($seed, $_POST['responseFingerprint']) == 0) {
                     if (!$this->_isPaid($oOrder)) {
                         $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PAID');
 
@@ -794,7 +796,7 @@ class wdceepayment extends oxUBase
                         }
                     }
 
-                    if (strcasecmp(hash_hmac('sha512', $seed, $this->getSecret()), $_POST['responseFingerprint']) == 0) {
+                    if (strcasecmp($seed, $_POST['responseFingerprint']) == 0) {
                         if (!$this->_isPaid($oOrder)) {
                             $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PENDING');
 

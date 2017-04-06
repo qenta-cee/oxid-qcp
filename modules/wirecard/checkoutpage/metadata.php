@@ -46,8 +46,8 @@ $aModule = array (
             'en' => 'Wirecard Checkout Page Payment Extension for Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support and sales information</strong><br /><a href="https://guides.wirecard.at/support" target="_blank">support</a><br /><a href="https://guides.wirecard.at/sales" target="_blank">sales</a></div></div>',
         ),
         'thumbnail' => 'picture.jpg',
-        'version' => '2.6.3',
-        'author' => 'Wirecard CEE',
+        'version' => '2.7.1',
+        'author' => 'Wirecard',
         'email' => 'support@wirecard.at',
         'url' => 'http://www.wirecard.at',
         'extend' => array (
