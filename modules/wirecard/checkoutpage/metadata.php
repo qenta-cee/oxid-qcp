@@ -47,7 +47,7 @@ $aModule = array (
         ),
         'thumbnail' => 'picture.jpg',
         'version' => '2.7.1',
-        'author' => 'Wirecard CEE',
+        'author' => 'Wirecard',
         'email' => 'support@wirecard.at',
         'url' => 'http://www.wirecard.at',
         'extend' => array (
