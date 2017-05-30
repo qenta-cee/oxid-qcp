@@ -83,8 +83,8 @@ class wcp_payment extends wcp_payment_parent
                 return '<img src="' . $imgPath . 'maestro.jpg" />';
             case 'wcp_moneta':
                 return '<img src="' . $imgPath . 'moneta.jpg" />';
-            case 'wcp_mpass':
-                return '<img src="' . $imgPath . 'mpass.jpg" />';
+            case 'wcp_masterpass':
+                return '<img src="' . $imgPath . 'masterpass.jpg" />';
             case 'wcp_paypal':
                 return '<img src="' . $imgPath . 'paypal.jpg" />';
             case 'wcp_pbx':
@@ -99,8 +99,6 @@ class wcp_payment extends wcp_payment_parent
                 return '<img src="' . $imgPath . 'quick.jpg" />';
             case 'wcp_sepa-dd':
                 return '<img src="' . $imgPath . 'sepa-dd.jpg" />';
-            case 'wcp_skrilldirect':
-                return '<img src="' . $imgPath . 'skrilldirect.jpg" />';
             case 'wcp_skrillwallet':
                 return '<img src="' . $imgPath . 'skrillwallet.jpg" />';
             case 'wcp_sofortueberweisung':

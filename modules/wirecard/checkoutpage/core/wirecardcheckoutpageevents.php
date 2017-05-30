@@ -49,9 +49,8 @@ class wirecardCheckoutPageEvents
                 'toamount' => 100000,
                 'activatePaymethod' => 1
             ),
-            'SKRILLDIRECT' => array('weight' => 10, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'SKRILLWALLET' => array('weight' => 11, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'MPASS' => array('weight' => 12, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
+            'MASTERPASS' => array('weight' => 12, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'BANCONTACT_MISTERCASH' => array(
                 'weight' => 13,
                 'fromamount' => 0,
