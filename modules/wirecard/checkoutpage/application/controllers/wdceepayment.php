@@ -372,6 +372,10 @@ class wdceepayment extends oxUBase
         $request['oxid_orderid'] = $oOrder->getId();
         $request['consumerMerchantCrmId'] = md5($oOrder->oxorder__oxbillemail->value);
 
+        if($paymenttype === 'MASTERPASS') {
+            $request['shippingProfile'] = 'NO_SHIPPING';
+        }
+
         if (in_array($paymenttype, Array('INVOICE', 'INSTALLMENT'))) {
             if ($oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
 
