@@ -84,7 +84,7 @@ class wcp_payment extends wcp_payment_parent
             case 'wcp_moneta':
                 return '<img src="' . $imgPath . 'moneta.jpg" />';
             case 'wcp_masterpass':
-                return '<img src="' . $imgPath . 'masterpass.jpg" />';
+                return '<img src="' . $imgPath . 'masterpass.png" />';
             case 'wcp_paypal':
                 return '<img src="' . $imgPath . 'paypal.jpg" />';
             case 'wcp_pbx':
