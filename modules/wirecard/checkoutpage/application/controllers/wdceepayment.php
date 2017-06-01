@@ -376,6 +376,10 @@ class wdceepayment extends oxUBase
             $request['shippingProfile'] = 'NO_SHIPPING';
         }
 
+        if($paymenttype === 'IDL' || $paymenttype === 'EPS') {
+            $request['financialInstitution'] = $this->getSession()->getVariable('financialInstitution');
+        }
+
         if( $paymenttype === 'INVOICE') {
             if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
 

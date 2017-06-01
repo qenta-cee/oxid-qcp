@@ -88,6 +88,67 @@
             </div>
             [{/if}]
 
+            [{if $sPaymentID=='wcp_eps'}]
+            <div class="desc" id="[{$sPaymentID}]_desc">
+                <ul class="form clear">
+                    <select name="[{$sPaymentID}]_financialInstitution">
+                        <option value="ARZ|AB">Apothekerbank</option>
+                        <option value="ARZ|AAB">Austrian Anadi Bank AG</option>
+                        <option value="ARZ|BAF">&Auml;rztebank</option>
+                        <option value="BA-CA">Bank Austria</option>
+                        <option value="ARZ|BCS">Bankhaus Carl Sp&auml;ngler & Co. AG</option>
+                        <option value="ARZ|BSS">Bankhaus Schelhammer & Schattera AG</option>
+                        <option value="Bawag|BG">BAWAG P.S.K. AG</option>
+                        <option value="ARZ|BKS">BKS Bank AG</option>
+                        <option value="ARZ|BKB">Br&uuml;ll Kallmus Bank AG</option>
+                        <option value="ARZ|BTV">BTV VIER L&Auml;NDER BANK</option>
+                        <option value="ARZ|CBGG">Capital Bank Grawe Gruppe AG</option>
+                        <option value="ARZ|VB">Volksbank Gruppe</option>
+                        <option value="ARZ|DB">Dolomitenbank</option>
+                        <option value="Bawag|EB">Easybank AG</option>
+                        <option value="Spardat|EBS">Erste Bank und Sparkassen</option>
+                        <option value="ARZ|HAA">Hypo Alpe-Adria-Bank International AG</option>
+                        <option value="ARZ|VLH">Hypo Landesbank Vorarlberg</option>
+                        <option value="ARZ|HI">HYPO NOE Gruppe Bank AG</option>
+                        <option value="ARZ|NLH">HYPO NOE Landesbank AG</option>
+                        <option value="Hypo-Racon|O">Hypo Ober&ouml;sterreich</option>
+                        <option value="Hypo-Racon|S">Hypo Salzburg</option>
+                        <option value="Hypo-Racon|St">Hypo Steiermark</option>
+                        <option value="ARZ|HTB">Hypo Tirol Bank AG</option>
+                        <option value="BB-Racon">HYPO-BANK BURGENLAND Aktiengesellschaft</option>
+                        <option value="ARZ|IB">Immo-Bank</option>
+                        <option value="ARZ|OB">Oberbank AG</option>
+                        <option value="Racon">Raiffeisen Bankengruppe &Ouml;sterreich</option>
+                        <option value="ARZ|SB">Schoellerbank AG</option>
+                        <option value="Bawag|SBW">Sparda Bank Wien</option>
+                        <option value="ARZ|SBA">SPARDA-BANK AUSTRIA</option>
+                        <option value="ARZ|VKB">Volkskreditbank AG</option>
+                        <option value="ARZ|VRB">VR-Bank Braunau</option>
+                    </select>
+                </ul>
+            </div>
+            [{/if}]
+
+            [{if $sPaymentID=='wcp_idl'}]
+            <div class="desc" id="[{$sPaymentID}]_desc">
+                <ul class="form clear">
+                    <select name="[{$sPaymentID}]_financialInstitution">
+                        <option value="ABNAMROBANK">ABN AMRO Bank</option>
+                        <option value="ASNBANK">ASN Bank</option>
+                        <option value="BUNQ">Bunq Bank</option>
+                        <option value="INGBANK">ING</option>
+                        <option value="KNAB">knab</option>
+                        <option value="RABOBANK">Rabobank</option>
+                        <option value="SNSBANK">SNS Bank</option>
+                        <option value="REGIOBANK">RegioBank</option>
+                        <option value="TRIODOSBANK">Triodos Bank</option>
+                        <option value="VANLANSCHOT">Van Lanschot Bankiers</option>
+                    </select>
+                </ul>
+            </div>
+            [{/if}]
+
+
             [{if $oView->hasWcpVatIdField($sPaymentID) && $bShowVatIdField}]
             <div class="desc">
                 <ul class="form clear">

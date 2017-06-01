@@ -147,6 +147,10 @@ class wcp_payment extends wcp_payment_parent
         $sPaymentId = (string )$oConfig->getRequestParameter('paymentid');
         $oLang = oxRegistry::get('oxLang');
 
+        if (in_array($sPaymentId, array('wcp_idl', 'wcp_eps'))) {
+            $oSession->setVariable('financialInstitution', oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_financialInstitution'));
+        }
+
         if ('wcp_invoice_b2c' == $sPaymentId) {
             if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
                 if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
