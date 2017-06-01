@@ -50,7 +50,8 @@ class wcp_oxpaymentlist extends wcp_oxpaymentlist_parent
                         $oOrder) || !empty($oUser->oxuser__oxcompany->value)
                 ) {
                     unset($paymentList['wcp_invoice_b2c']);
-                } elseif ($dob && $dob == '0000-00-00' && oxRegistry::getConfig()->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+                    echo "invoice_b2c unset";
+                } elseif ($dob && $dob == '0000-00-00' && oxRegistry::getConfig()->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
 
@@ -69,7 +70,7 @@ class wcp_oxpaymentlist extends wcp_oxpaymentlist_parent
                 ) {
                     unset($paymentList['wcp_invoice_b2b']);
                 }
-                if (oxRegistry::getConfig()->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+                if (oxRegistry::getConfig()->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
                     $sVatId = oxRegistry::getSession()->getVariable('wcp_vatId');
                     if (empty($vatId)) {
                         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
@@ -82,7 +83,7 @@ class wcp_oxpaymentlist extends wcp_oxpaymentlist_parent
             if (array_key_exists('wcp_installment', $paymentList)) {
                 if (!$this->_isWCPInstallmentAvailable($oUser, $oBasket, $oOrder)) {
                     unset($paymentList['wcp_installment']);
-                } elseif ($dob && $dob == '0000-00-00' && oxRegistry::getConfig()->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+                } elseif ($dob && $dob == '0000-00-00' && oxRegistry::getConfig()->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
 

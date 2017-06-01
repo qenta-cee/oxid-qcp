@@ -157,7 +157,8 @@ $aModule = array (
             array('group' => 'wcp_iframe_settings', 'name' => 'bWcp_voucher_UseIframe', 'type' => 'bool', 'value' => '1'),
             array('group' => 'wcp_iframe_settings', 'name' => 'bWcp_trustpay_UseIframe', 'type' => 'bool', 'value' => '1'),
 
-            array('group' => 'wcp_installment_invoice_settings', 'name' => 'sWcpInvoiceInstallmentProvider', 'type' => 'select', 'value' => 'PAYOLUTION', 'constraints' => 'PAYOLUTION|RATEPAY|WIRECARD'),
+            array('group' => 'wcp_installment_invoice_settings', 'name' => 'sWcpInvoiceProvider', 'type' => 'select', 'value' => 'WIRECARD', 'constraints' => 'PAYOLUTION|RATEPAY|WIRECARD'),
+            array('group' => 'wcp_installment_invoice_settings', 'name' => 'sWcpInstallmentProvider', 'type' => 'select', 'value' => 'PAYOLUTION', 'constraints' => 'PAYOLUTION|RATEPAY'),
             array('group' => 'wcp_installment_invoice_settings', 'name' => 'sWcpPayolutionMId', 'type' => 'str', 'value' => ''),
             array('group' => 'wcp_installment_invoice_settings', 'name' => 'bWcpInstallmentTrustedShopsCheckbox', 'type' => 'bool', 'value' => ''),
             array('group' => 'wcp_installment_invoice_settings', 'name' => 'bWcpInvoiceb2bTrustedShopsCheckbox', 'type' => 'bool', 'value' => ''),

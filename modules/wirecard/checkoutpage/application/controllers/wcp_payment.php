@@ -129,7 +129,7 @@ class wcp_payment extends wcp_payment_parent
     public function hasWcpVatIdField($sPaymentId)
     {
 
-        if (oxRegistry::getConfig()->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+        if (oxRegistry::getConfig()->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
             if ($sPaymentId == 'wcp_invoice_b2b') {
                 return true;
             }
@@ -147,8 +147,42 @@ class wcp_payment extends wcp_payment_parent
         $sPaymentId = (string )$oConfig->getRequestParameter('paymentid');
         $oLang = oxRegistry::get('oxLang');
 
-        if ('wcp_invoice_b2c' == $sPaymentId || 'wcp_installment' == $sPaymentId) {
-            if ($oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+        if ('wcp_invoice_b2c' == $sPaymentId) {
+            if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
+                if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
+                    $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
+                    $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
+                    $iBirthdayMonth = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayMonth');
+
+                    if (empty($iBirthdayYear) || empty($iBirthdayDay) || empty($iBirthdayMonth)) {
+                        $oSession->setVariable('wcp_payerrortext',
+                            $oLang->translateString('WIRECARD_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
+                                $oLang->getBaseLanguage()));
+
+                        return;
+                    }
+
+                    $dateData = array('day' => $iBirthdayDay, 'month' => $iBirthdayMonth, 'year' => $iBirthdayYear);
+                    $oSession->setVariable('wcp_dobData', $dateData);
+
+                    if (is_array($dateData)) {
+                        $oUser->oxuser__oxbirthdate = new oxField($oUser->convertBirthday($dateData), oxField::T_RAW);
+                        $oUser->save();
+                    }
+                }
+
+                //validate paymethod
+                if (!$this->wcpValidateCustomerAge($oUser, 18)) {
+                    $oSession->setVariable('wcp_payerrortext',
+                        sprintf($oLang->translateString('WIRECARD_CHECKOUT_PAGE_DOB_TOO_YOUNG',
+                            $oLang->getBaseLanguage()), 18));
+
+                    return;
+                }
+            }
+        }
+        if ('wcp_installment' == $sPaymentId) {
+            if ($oConfig->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION') {
                 if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
                     $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
                     $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
@@ -182,7 +216,7 @@ class wcp_payment extends wcp_payment_parent
             }
         }
         if ('wcp_invoice_b2b' == $sPaymentId) {
-            if ($oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+            if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
                 $vatId = $oUser->oxuser__oxustid->value;
                 if ($this->hasWcpVatIdField($sPaymentId) && empty($vatId)) {
                     $sVatId = oxRegistry::getConfig()->getRequestParameter('sVatId');
@@ -208,21 +242,22 @@ class wcp_payment extends wcp_payment_parent
                     }
                 }
             }
+
         }
-        if ($oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
-            if ($this->showWcpTrustedShopsCheckbox($sPaymentId)) {
-                if (!oxRegistry::getConfig()->getRequestParameter('payolutionTerms')) {
-                    $oSession->setVariable('wcp_payerrortext',
-                        $oLang->translateString('WIRECARD_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS',
-                            $oLang->getBaseLanguage()));
 
-                    $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-                    $oSmarty->assign("aErrors", array('payolutionTerms' => 1));
+        if ($this->showWcpTrustedShopsCheckbox($sPaymentId)) {
+            if (!oxRegistry::getConfig()->getRequestParameter('payolutionTerms')) {
+                $oSession->setVariable('wcp_payerrortext',
+                    $oLang->translateString('WIRECARD_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS',
+                        $oLang->getBaseLanguage()));
 
-                    return;
-                }
+                $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+                $oSmarty->assign("aErrors", array('payolutionTerms' => 1));
+
+                return;
             }
         }
+
 
         return $parentResult;
     }
@@ -326,17 +361,17 @@ class wcp_payment extends wcp_payment_parent
 
     function showWcpTrustedShopsCheckbox($sPaymentId)
     {
-        if (oxRegistry::getConfig()->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
-            switch ($sPaymentId) {
-                case 'wcp_installment':
-                    return oxRegistry::getConfig()->getConfigParam('bWcpInstallmentTrustedShopsCheckbox');
-                case 'wcp_invoice_b2b':
-                    return oxRegistry::getConfig()->getConfigParam('bWcpInvoiceb2bTrustedShopsCheckbox');
-                case 'wcp_invoice_b2c':
-                    return oxRegistry::getConfig()->getConfigParam('bWcpInvoiceb2cTrustedShopsCheckbox');
-                default:
-                    return false;
-            }
+        $installmentPayolution = oxRegistry::getConfig()->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION';
+        $invoicePayolution = oxRegistry::getConfig()->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION';
+        switch ($sPaymentId) {
+            case 'wcp_installment':
+                return $installmentPayolution ? oxRegistry::getConfig()->getConfigParam('bWcpInstallmentTrustedShopsCheckbox') : false;
+            case 'wcp_invoice_b2b':
+                return $invoicePayolution ? oxRegistry::getConfig()->getConfigParam('bWcpInvoiceb2bTrustedShopsCheckbox') : false;
+            case 'wcp_invoice_b2c':
+                return $invoicePayolution ? oxRegistry::getConfig()->getConfigParam('bWcpInvoiceb2cTrustedShopsCheckbox') : false;
+            default:
+                return false;
         }
     }
 

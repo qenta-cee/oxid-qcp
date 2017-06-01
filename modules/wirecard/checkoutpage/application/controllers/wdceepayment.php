@@ -376,8 +376,8 @@ class wdceepayment extends oxUBase
             $request['shippingProfile'] = 'NO_SHIPPING';
         }
 
-        if (in_array($paymenttype, Array('INVOICE', 'INSTALLMENT'))) {
-            if ($oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'PAYOLUTION') {
+        if( $paymenttype === 'INVOICE') {
+            if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
                 $oUser = $oOrder->getOrderUser();
@@ -393,7 +393,7 @@ class wdceepayment extends oxUBase
                         $request['consumerBirthDate'] = $consumerBirthDate;
                     }
                 }
-            } elseif ($oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'WIRECARD' || $oConfig->getConfigParam('sWcpInvoiceInstallmentProvider') == 'RATEPAY') {
+            } elseif ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'WIRECARD' || $oConfig->getConfigParam('sWcpInvoiceProvider') == 'RATEPAY') {
                 $request = array_merge($request, $this->_getOrderBasketRequestParams($oOrder));
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
@@ -404,6 +404,35 @@ class wdceepayment extends oxUBase
                 }
             }
         }
+        elseif( $paymenttype === 'INSTALLMENT') {
+            if ($oConfig->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION') {
+
+                $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
+                $oUser = $oOrder->getOrderUser();
+
+                if ($paymenttypeShop == "wcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
+                    $request['companyVatId'] = $oUser->oxuser__oxustid->value;
+                    $request['companyName'] = $oUser->oxuser__oxcompany->value;
+                } else {
+                    // processing birth date which came from output as array
+                    $consumerBirthDate = is_array($oUser->oxuser__oxbirthdate->value) ? $oUser->convertBirthday($oUser->oxuser__oxbirthdate->value) : $oUser->oxuser__oxbirthdate->value;
+
+                    if ($consumerBirthDate != '0000-00-00') {
+                        $request['consumerBirthDate'] = $consumerBirthDate;
+                    }
+                }
+            } elseif ($oConfig->getConfigParam('sWcpInstallmentProvider') == 'RATEPAY') {
+                $request = array_merge($request, $this->_getOrderBasketRequestParams($oOrder));
+                $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
+
+                $oUser = $oOrder->getOrderUser();
+                $consumerBirthDate = is_array($oUser->oxuser__oxbirthdate->value) ? $oUser->convertBirthday($oUser->oxuser__oxbirthdate->value) : $oUser->oxuser__oxbirthdate->value;
+                if ($consumerBirthDate != '0000-00-00') {
+                    $request['consumerBirthDate'] = $consumerBirthDate;
+                }
+            }
+        }
+
         if ($oConfig->getConfigParam('bWcpSendAdditionalBasketData') == 1) {
             $request = array_merge($request, $this->_getOrderBasketRequestParams($oOrder));
         }
