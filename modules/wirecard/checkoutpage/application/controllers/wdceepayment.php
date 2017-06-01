@@ -1033,81 +1033,77 @@ class wdceepayment extends oxUBase
 
     private function _getOrderBasketRequestParams($oOrder)
     {
-
-        $oConfig = $this->getConfig();
         $oOrderArticles = $oOrder->getOrderArticles();
 
-        $basketAmount = 0;
-        $basketCurrency = $oConfig->getActShopCurrencyObject()->name;
         $basketItemsCount = 0;
 
         $oLang = oxRegistry::get('oxLang');
         $iLangId = $oLang->getBaseLanguage();
-
+        /**
+         * @var $oOrderArticle oxOrderArticle
+         */
+        echo "<pre>";
         foreach ($oOrderArticles as $oOrderArticle) {
-            $netPrice = number_format($oOrderArticle->oxorderarticles__oxnprice->rawValue, 2);
-            $netTax = number_format($oOrderArticle->oxorderarticles__oxbprice->rawValue - $oOrderArticle->oxorderarticles__oxnprice->rawValue,
-                2);
             $amount = $oOrderArticle->oxorderarticles__oxamount->rawValue;
+            $picture_url = $oOrderArticle->getConfig()->getOutUrl() . "pictures/master/product/1/" . $oOrderArticle->oxorderarticles__oxpic1->rawValue;
             $basketItemsCount++;
 
             $basket['basketItem' . $basketItemsCount . 'ArticleNumber'] = $oOrderArticle->oxorderarticles__oxartnum->rawValue;
-            $basket['basketItem' . $basketItemsCount . 'Description'] = utf8_decode($oOrderArticle->oxarticles__oxshortdesc->rawValue);
+            $basket['basketItem' . $basketItemsCount . 'Description'] = substr(utf8_decode($oOrderArticle->oxarticles__oxshortdesc->rawValue), 0, 127);
+            $basket['basketItem' . $basketItemsCount . 'ImageUrl'] = $picture_url;
+            $basket['basketItem' . $basketItemsCount . 'Name'] = substr(utf8_decode($oOrderArticle->oxarticles__oxtitle->value), 0, 127);
             $basket['basketItem' . $basketItemsCount . 'Quantity'] = $amount;
-            $basket['basketItem' . $basketItemsCount . 'Tax'] = number_format($netTax * $amount, 2, '.', '');
-            $basket['basketItem' . $basketItemsCount . 'UnitPrice'] = number_format($netPrice, 2, '.', '');
-            $basketAmount += $amount * $oOrderArticle->oxorderarticles__oxbprice->rawValue;
-        }
+            $basket['basketItem' . $basketItemsCount . 'UnitGrossAmount'] = number_format($oOrderArticle->oxorderarticles__oxbprice->rawValue, 2);
+            $basket['basketItem' . $basketItemsCount . 'UnitNetAmount'] = number_format($oOrderArticle->oxorderarticles__oxnprice->rawValue, 2);
+            $basket['basketItem' . $basketItemsCount . 'UnitTaxAmount'] = number_format($oOrderArticle->oxorderarticles__oxvatprice->rawValue, 2);
+            $basket['basketItem' . $basketItemsCount . 'UnitTaxRate'] = number_format($oOrderArticle->oxorderarticles__oxvat->rawValue, 2);
 
-        //add possible additional pcosts as articles to basket
-        $aAdditionalCosts = array(
-            'shipping cost' => array(
-                'description' => $oLang->translateString('SHIPPING_COST', $iLangId),
-                'vat' => $oOrder->oxorder__oxdelvat->rawValue,
-                'price' => $oOrder->oxorder__oxdelcost->rawValue
-            ),
-            'paymethod cost' => array(
-                'description' => $oLang->translateString('SURCHARGE',
-                        $iLangId) . ' ' . $oLang->translateString('PAYMENT_METHOD', $iLangId),
-                'vat' => $oOrder->oxorder__oxpayvat->rawValue,
-                'price' => $oOrder->oxorder__oxpaycost->rawValue
-            ),
-            'wrapping cost' => array(
-                'description' => $oLang->translateString('GIFT_WRAPPING', $iLangId),
-                'vat' => $oOrder->oxorder__oxwrapvat->rawValue,
-                'price' => $oOrder->oxorder__oxwrapvat->rawValue
-            ),
-            'gift card cost' => array(
-                'description' => $oLang->translateString('GREETING_CARD', $iLangId),
-                'vat' => $oOrder->oxorder__oxgiftcardvat->rawValue,
-                'price' => $oOrder->oxorder__oxgiftcardcost->rawValue
-            ),
-            'discount' => array(
-                'description' => $oLang->translateString('DISCOUNT', $iLangId),
-                'vat' => 0,
-                'price' => $oOrder->oxorder__oxdiscount->rawValue * -1
-            ),
-        );
+            //add possible additional pcosts as articles to basket
+            $aAdditionalCosts = array(
+                'shipping cost' => array(
+                    'description' => $oLang->translateString('SHIPPING_COST', $iLangId),
+                    'vat' => $oOrder->oxorder__oxdelvat->rawValue,
+                    'price' => $oOrder->oxorder__oxdelcost->rawValue
+                ),
+                'paymethod cost' => array(
+                    'description' => $oLang->translateString('SURCHARGE',
+                            $iLangId) . ' ' . $oLang->translateString('PAYMENT_METHOD', $iLangId),
+                    'vat' => $oOrder->oxorder__oxpayvat->rawValue,
+                    'price' => $oOrder->oxorder__oxpaycost->rawValue
+                ),
+                'wrapping cost' => array(
+                    'description' => $oLang->translateString('GIFT_WRAPPING', $iLangId),
+                    'vat' => $oOrder->oxorder__oxwrapvat->rawValue,
+                    'price' => $oOrder->oxorder__oxwrapvat->rawValue
+                ),
+                'gift card cost' => array(
+                    'description' => $oLang->translateString('GREETING_CARD', $iLangId),
+                    'vat' => $oOrder->oxorder__oxgiftcardvat->rawValue,
+                    'price' => $oOrder->oxorder__oxgiftcardcost->rawValue
+                ),
+                'discount' => array(
+                    'description' => $oLang->translateString('DISCOUNT', $iLangId),
+                    'vat' => 0,
+                    'price' => $oOrder->oxorder__oxdiscount->rawValue * -1
+                ),
+            );
 
-        foreach ($aAdditionalCosts as $type => $data) {
-            if ($data['price'] != 0) {
-                $basketItemsCount++;
-                $netTaxAdditional = number_format($data['price'] * ($data['vat'] / 100), 2);
-                $netPriceAdditional = number_format($data['price'] - $netTaxAdditional, 2);
-                $basket['basketItem' . $basketItemsCount . 'ArticleNumber'] = $type;
-                $basket['basketItem' . $basketItemsCount . 'Description'] = $data['description'];
-                $basket['basketItem' . $basketItemsCount . 'Quantity'] = 1;
-                $basket['basketItem' . $basketItemsCount . 'Tax'] = number_format($netTaxAdditional, 2, '.', '');
-                $basket['basketItem' . $basketItemsCount . 'UnitPrice'] = number_format($netPriceAdditional, 2, '.',
-                    '');
-                $basketAmount += $data['price'];
+            foreach ($aAdditionalCosts as $type => $data) {
+                if ($data['price'] != 0) {
+                    $basketItemsCount++;
+                    $netTaxAdditional = number_format($data['price'] * ($data['vat'] / 100), 2);
+                    $netPriceAdditional = number_format($data['price'] - $netTaxAdditional, 2);
+                    $basket['basketItem' . $basketItemsCount . 'ArticleNumber'] = $type;
+                    $basket['basketItem' . $basketItemsCount . 'Description'] = $data['description'];
+                    $basket['basketItem' . $basketItemsCount . 'Name'] = $data['description'];
+                    $basket['basketItem' . $basketItemsCount . 'Quantity'] = 1;
+                    $basket['basketItem' . $basketItemsCount . 'UnitGrossAmount'] = number_format($data['price'], 2);
+                    $basket['basketItem' . $basketItemsCount . 'UnitNetAmount'] = number_format($netPriceAdditional, 2);
+                    $basket['basketItem' . $basketItemsCount . 'UnitTaxAmount'] = number_format($netTaxAdditional, 2);
+                    $basket['basketItem' . $basketItemsCount . 'UnitTaxRate'] = number_format($data['vat'], 2);
+                }
             }
         }
-
-        $basket['basketAmount'] = number_format($basketAmount, 2, '.', '');
-        $basket['basketCurrency'] = $basketCurrency;
-        $basket['basketItems'] = $basketItemsCount;
-
         return $basket;
     }
 
