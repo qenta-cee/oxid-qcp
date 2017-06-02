@@ -58,57 +58,57 @@ class wcp_payment extends wcp_payment_parent
         $imgPath = $conf->getConfigParam('sShopURL') . '/modules/' . $modulePaths['wirecardcheckoutpage'] . '/out/img/';
         switch ($paymethod) {
             case 'wcp_bancontact_mistercash':
-                return '<img src="' . $imgPath . 'bancontact_mistercash.jpg" />';
+                return '<img src="' . $imgPath . 'bancontact_mistercash.png" />';
             case 'wcp_ccard':
-                return '<img src="' . $imgPath . 'ccard.jpg" />';
+                return '<img src="' . $imgPath . 'ccard.png" />';
             case 'wcp_ccard-moto':
-                return '<img src="' . $imgPath . 'ccard_moto.jpg" />';
+                return '<img src="' . $imgPath . 'ccard.png" />';
             case 'wcp_ekonto':
-                return '<img src="' . $imgPath . 'ekonto.jpg" />';
+                return '<img src="' . $imgPath . 'ekonto.png" />';
             case 'wcp_epay_bg':
-                return '<img src="' . $imgPath . 'epay_bg.jpg" />';
+                return '<img src="' . $imgPath . 'epay_bg.png" />';
             case 'wcp_eps':
-                return '<img src="' . $imgPath . 'eps.jpg" />';
+                return '<img src="' . $imgPath . 'eps.png" />';
             case 'wcp_giropay':
                 return '<img src="' . $imgPath . 'giropay.jpg" />';
             case 'wcp_idl':
-                return '<img src="' . $imgPath . 'idl.jpg" />';
+                return '<img src="' . $imgPath . 'idl.png" />';
             case 'wcp_installment':
                 return '<img src="' . $imgPath . 'installment.jpg" />';
             case 'wcp_invoice_b2b':
                 return '<img src="' . $imgPath . 'invoice.jpg" />';
             case 'wcp_invoice_b2c':
-                return '<img src="' . $imgPath . 'invoice.jpg" />';
+                return '<img src="' . $imgPath . 'invoice.png" />';
             case 'wcp_maestro':
-                return '<img src="' . $imgPath . 'maestro.jpg" />';
+                return '<img src="' . $imgPath . 'maestro.png" />';
             case 'wcp_moneta':
                 return '<img src="' . $imgPath . 'moneta.jpg" />';
             case 'wcp_masterpass':
                 return '<img src="' . $imgPath . 'masterpass.png" />';
             case 'wcp_paypal':
-                return '<img src="' . $imgPath . 'paypal.jpg" />';
+                return '<img src="' . $imgPath . 'paypal.png" />';
             case 'wcp_pbx':
                 return '<img src="' . $imgPath . 'pbx.jpg" />';
             case 'wcp_poli':
-                return '<img src="' . $imgPath . 'poli.jpg" />';
+                return '<img src="' . $imgPath . 'poli.png" />';
             case 'wcp_przelewy24':
                 return '<img src="' . $imgPath . 'przelewy24.jpg" />';
             case 'wcp_psc':
-                return '<img src="' . $imgPath . 'psc.jpg" />';
+                return '<img src="' . $imgPath . 'psc.png" />';
             case 'wcp_quick':
                 return '<img src="' . $imgPath . 'quick.jpg" />';
             case 'wcp_sepa-dd':
-                return '<img src="' . $imgPath . 'sepa-dd.jpg" />';
+                return '<img src="' . $imgPath . 'sepa.png" />';
             case 'wcp_skrillwallet':
                 return '<img src="' . $imgPath . 'skrillwallet.jpg" />';
             case 'wcp_sofortueberweisung':
-                return '<img src="' . $imgPath . 'sofortueberweisung.jpg" />';
+                return '<img src="' . $imgPath . 'sofort.png" />';
             case 'wcp_tatrapay':
                 return '<img src="' . $imgPath . 'tatrapay.jpg" />';
             case 'wcp_trustly':
                 return '<img src="' . $imgPath . 'trustly.jpg" />';
             case 'wcp_voucher':
-                return '<img src="' . $imgPath . 'voucher.jpg" />';
+                return '<img src="' . $imgPath . 'voucher.png" />';
             case 'wcp_trustpay':
                 return '<img src="' . $imgPath . 'trustpay.jpg" />';
             default:
