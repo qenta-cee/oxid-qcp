@@ -349,7 +349,7 @@ class wdceepayment extends oxUBase
         $request['pendingUrl'] = $returnUrl;
         $request['duplicateRequestCheck'] = ($oConfig->getConfigParam('bWcpDuplicateRequestCheck') == 1) ? 'yes' : 'no';
 
-        $request['orderReference'] = $orderReference;
+        $request['orderReference'] = "aa".$orderReference;
         $request['customerStatement'] = $customerStatementString;
 
         $request['displayText'] = $oConfig->getConfigParam('sWcpDisplayText');
@@ -380,11 +380,11 @@ class wdceepayment extends oxUBase
             $request['financialInstitution'] = $this->getSession()->getVariable('financialInstitution');
         }
 
+        $oUser = $oOrder->getOrderUser();
         if( $paymenttype === 'INVOICE') {
             if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
-                $oUser = $oOrder->getOrderUser();
 
                 if ($paymenttypeShop == "wcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
                     $request['companyVatId'] = $oUser->oxuser__oxustid->value;
@@ -397,11 +397,10 @@ class wdceepayment extends oxUBase
                         $request['consumerBirthDate'] = $consumerBirthDate;
                     }
                 }
-            } elseif ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'WIRECARD' || $oConfig->getConfigParam('sWcpInvoiceProvider') == 'RATEPAY') {
+            } else {
                 $request = array_merge($request, $this->_getOrderBasketRequestParams($oOrder));
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
-                $oUser = $oOrder->getOrderUser();
                 $consumerBirthDate = is_array($oUser->oxuser__oxbirthdate->value) ? $oUser->convertBirthday($oUser->oxuser__oxbirthdate->value) : $oUser->oxuser__oxbirthdate->value;
                 if ($consumerBirthDate != '0000-00-00') {
                     $request['consumerBirthDate'] = $consumerBirthDate;
@@ -412,7 +411,6 @@ class wdceepayment extends oxUBase
             if ($oConfig->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION') {
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
-                $oUser = $oOrder->getOrderUser();
 
                 if ($paymenttypeShop == "wcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
                     $request['companyVatId'] = $oUser->oxuser__oxustid->value;
@@ -429,7 +427,6 @@ class wdceepayment extends oxUBase
                 $request = array_merge($request, $this->_getOrderBasketRequestParams($oOrder));
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
-                $oUser = $oOrder->getOrderUser();
                 $consumerBirthDate = is_array($oUser->oxuser__oxbirthdate->value) ? $oUser->convertBirthday($oUser->oxuser__oxbirthdate->value) : $oUser->oxuser__oxbirthdate->value;
                 if ($consumerBirthDate != '0000-00-00') {
                     $request['consumerBirthDate'] = $consumerBirthDate;
@@ -1046,7 +1043,6 @@ class wdceepayment extends oxUBase
         /**
          * @var $oOrderArticle oxOrderArticle
          */
-        echo "<pre>";
         foreach ($oOrderArticles as $oOrderArticle) {
             $amount = $oOrderArticle->oxorderarticles__oxamount->rawValue;
             $picture_url = $oOrderArticle->getConfig()->getOutUrl() . "pictures/master/product/1/" . $oOrderArticle->oxorderarticles__oxpic1->rawValue;

@@ -50,8 +50,7 @@ class wcp_oxpaymentlist extends wcp_oxpaymentlist_parent
                         $oOrder) || !empty($oUser->oxuser__oxcompany->value)
                 ) {
                     unset($paymentList['wcp_invoice_b2c']);
-                    echo "invoice_b2c unset";
-                } elseif ($dob && $dob == '0000-00-00' && oxRegistry::getConfig()->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
+                } elseif ($dob && $dob == '0000-00-00') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
 
@@ -83,7 +82,7 @@ class wcp_oxpaymentlist extends wcp_oxpaymentlist_parent
             if (array_key_exists('wcp_installment', $paymentList)) {
                 if (!$this->_isWCPInstallmentAvailable($oUser, $oBasket, $oOrder)) {
                     unset($paymentList['wcp_installment']);
-                } elseif ($dob && $dob == '0000-00-00' && oxRegistry::getConfig()->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION') {
+                } elseif ($dob && $dob == '0000-00-00') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
 
