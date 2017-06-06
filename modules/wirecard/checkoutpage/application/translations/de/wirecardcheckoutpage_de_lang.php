@@ -61,4 +61,5 @@ $aLang = array(
     'WIRECARD_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS' => 'Bitte stimmen Sie den Bedingungen von payolution zu.',
     'WIRECARD_CHECKOUT_PAGE_PAYOLUTION_TERMS' => 'Mit der &Uuml;bermittlung jener Daten an payolution, die f&uuml;r die Abwicklung von Zahlungen mit Kauf auf Rechnung und die Identit&auml;ts- und Bonit&auml;tspr&uuml;fung erforderlich sind, bin ich einverstanden. Meine <a href="%s" target="_blank"><strong>Einwilligung</strong></a> kann ich jederzeit mit Wirkung f&uuml;r die Zukunft widerrufen.',
     'WIRECARD_CHECKOUT_PAGE_VAT_ID_MISSING' => 'USt-IdNr. nicht ausgef&uuml;llt.',
+    'WIRECARD_CHECKOUT_PAGE_PENDING_PAYMENT' => 'Ihre Zahlung wurde vom Finanzinstitut noch nicht best&auml;tigt.'
 );
