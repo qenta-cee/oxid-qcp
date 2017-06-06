@@ -151,72 +151,36 @@ class wcp_payment extends wcp_payment_parent
             $oSession->setVariable('financialInstitution', oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_financialInstitution'));
         }
 
-        if ('wcp_invoice_b2c' == $sPaymentId) {
-            if ($oConfig->getConfigParam('sWcpInvoiceProvider') == 'PAYOLUTION') {
-                if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
-                    $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
-                    $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
-                    $iBirthdayMonth = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayMonth');
+        if (in_array($sPaymentId,array('wcp_invoice_b2c','wcp_installment'))) {
+            if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
+                $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
+                $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
+                $iBirthdayMonth = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayMonth');
 
-                    if (empty($iBirthdayYear) || empty($iBirthdayDay) || empty($iBirthdayMonth)) {
-                        $oSession->setVariable('wcp_payerrortext',
-                            $oLang->translateString('WIRECARD_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
-                                $oLang->getBaseLanguage()));
-
-                        return;
-                    }
-
-                    $dateData = array('day' => $iBirthdayDay, 'month' => $iBirthdayMonth, 'year' => $iBirthdayYear);
-                    $oSession->setVariable('wcp_dobData', $dateData);
-
-                    if (is_array($dateData)) {
-                        $oUser->oxuser__oxbirthdate = new oxField($oUser->convertBirthday($dateData), oxField::T_RAW);
-                        $oUser->save();
-                    }
-                }
-
-                //validate paymethod
-                if (!$this->wcpValidateCustomerAge($oUser, 18)) {
+                if (empty($iBirthdayYear) || empty($iBirthdayDay) || empty($iBirthdayMonth)) {
                     $oSession->setVariable('wcp_payerrortext',
-                        sprintf($oLang->translateString('WIRECARD_CHECKOUT_PAGE_DOB_TOO_YOUNG',
-                            $oLang->getBaseLanguage()), 18));
+                        $oLang->translateString('WIRECARD_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
+                            $oLang->getBaseLanguage()));
 
                     return;
+                }
+
+                $dateData = array('day' => $iBirthdayDay, 'month' => $iBirthdayMonth, 'year' => $iBirthdayYear);
+                $oSession->setVariable('wcp_dobData', $dateData);
+
+                if (is_array($dateData)) {
+                    $oUser->oxuser__oxbirthdate = new oxField($oUser->convertBirthday($dateData), oxField::T_RAW);
+                    $oUser->save();
                 }
             }
-        }
-        if ('wcp_installment' == $sPaymentId) {
-            if ($oConfig->getConfigParam('sWcpInstallmentProvider') == 'PAYOLUTION') {
-                if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
-                    $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
-                    $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
-                    $iBirthdayMonth = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayMonth');
 
-                    if (empty($iBirthdayYear) || empty($iBirthdayDay) || empty($iBirthdayMonth)) {
-                        $oSession->setVariable('wcp_payerrortext',
-                            $oLang->translateString('WIRECARD_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
-                                $oLang->getBaseLanguage()));
+            //validate paymethod
+            if (!$this->wcpValidateCustomerAge($oUser, 18)) {
+                $oSession->setVariable('wcp_payerrortext',
+                    sprintf($oLang->translateString('WIRECARD_CHECKOUT_PAGE_DOB_TOO_YOUNG',
+                        $oLang->getBaseLanguage()), 18));
 
-                        return;
-                    }
-
-                    $dateData = array('day' => $iBirthdayDay, 'month' => $iBirthdayMonth, 'year' => $iBirthdayYear);
-                    $oSession->setVariable('wcp_dobData', $dateData);
-
-                    if (is_array($dateData)) {
-                        $oUser->oxuser__oxbirthdate = new oxField($oUser->convertBirthday($dateData), oxField::T_RAW);
-                        $oUser->save();
-                    }
-                }
-
-                //validate paymethod
-                if (!$this->wcpValidateCustomerAge($oUser, 18)) {
-                    $oSession->setVariable('wcp_payerrortext',
-                        sprintf($oLang->translateString('WIRECARD_CHECKOUT_PAGE_DOB_TOO_YOUNG',
-                            $oLang->getBaseLanguage()), 18));
-
-                    return;
-                }
+                return;
             }
         }
         if ('wcp_invoice_b2b' == $sPaymentId) {
