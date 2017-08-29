@@ -372,6 +372,11 @@ class wdceepayment extends oxUBase
         $request['oxid_orderid'] = $oOrder->getId();
         $request['consumerMerchantCrmId'] = md5($oOrder->oxorder__oxbillemail->value);
 
+        if (isset($_SESSION['wcp-consumerDeviceId'])) {
+            $request['consumerDeviceId'] = $_SESSION['wcp-consumerDeviceId'];
+            unset($_SESSION['wcp-consumerDeviceId']);
+        }
+
         if($paymenttype === 'MASTERPASS') {
             $request['shippingProfile'] = 'NO_SHIPPING';
         }
