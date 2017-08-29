@@ -44,7 +44,7 @@ class wdceepayment extends oxUBase
     protected static $_PAYMENT_WIRECARD_CHECKOUT_URL = 'checkout.wirecard.com';
     protected static $_PAYMENT_INIT_URL = 'https://checkout.wirecard.com/page/init-server.php';
 
-    protected static $_PLUGIN_VERSION = '2.8.0';
+    protected static $_PLUGIN_VERSION = '2.8.1';
 
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
@@ -371,6 +371,11 @@ class wdceepayment extends oxUBase
         $request['backgroundColor'] = $oConfig->getConfigParam('sWcpBackgroundColor');
         $request['oxid_orderid'] = $oOrder->getId();
         $request['consumerMerchantCrmId'] = md5($oOrder->oxorder__oxbillemail->value);
+
+        if (isset($_SESSION['wcp-consumerDeviceId'])) {
+            $request['consumerDeviceId'] = $_SESSION['wcp-consumerDeviceId'];
+            unset($_SESSION['wcp-consumerDeviceId']);
+        }
 
         if($paymenttype === 'MASTERPASS') {
             $request['shippingProfile'] = 'NO_SHIPPING';

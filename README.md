@@ -1,7 +1,7 @@
 # Wirecard Checkout Page extension for OXID eSales
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/wirecard/oxid-wcp/master/LICENSE)
-[![OXID eSales Community Edition 4.10.4](https://img.shields.io/badge/OXID_CE-v4.10.4-green.svg)](http://www.oxid-esales.com/)
+[![OXID eSales Community Edition 4.10.5](https://img.shields.io/badge/OXID_CE-v4.10.5-green.svg)](http://www.oxid-esales.com/)
 [![OXID eSales Enterprise Edition 5.2.9](https://img.shields.io/badge/OXID_EE-v5.2.9-green.svg)](http://www.oxid-esales.com/)
 [![PHP v5.6](https://img.shields.io/badge/php-v5.6-yellow.svg)](http://www.php.net)
 

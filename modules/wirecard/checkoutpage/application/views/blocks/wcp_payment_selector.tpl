@@ -14,6 +14,11 @@
     [{assign var="iBirthdayYear" value=0}]
 [{/if}]
 
+[{if !isset($wcsPaymentCount)}]
+    [{$oView->getWcpRatePayConsumerDeviceId()}]
+    [{ assign var="wcpPaymentCount" value="1"}]
+[{/if}]
+
 [{if $oView->isWcpPaymethod($sPaymentID)}]
     <dl>
         <dt>
