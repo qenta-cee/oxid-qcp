@@ -57,12 +57,12 @@ class wcp_payment extends wcp_payment_parent
     {
         $config = oxRegistry::getConfig();
 
-        if(isset($_SESSION['wcs-consumerDeviceId'])) {
-            $consumerDeviceId = $_SESSION['wcs-consumerDeviceId'];
+        if(isset($_SESSION['wcp-consumerDeviceId'])) {
+            $consumerDeviceId = $_SESSION['wcp-consumerDeviceId'];
         } else {
             $timestamp = microtime();
             $consumerDeviceId = md5($config->getConfigParam('sWcpCustomerId') . "_" . $timestamp);
-            $_SESSION['wcs-consumerDeviceId'] = $consumerDeviceId;
+            $_SESSION['wcp-consumerDeviceId'] = $consumerDeviceId;
         }
         $ratepay = '<script language="JavaScript">var di = {t:"'.$consumerDeviceId.'",v:"WDWL",l:"Checkout"};</script>';
         $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/'.$consumerDeviceId.'/di.js"></script>';
