@@ -44,7 +44,7 @@ class wdceepayment extends oxUBase
     protected static $_PAYMENT_WIRECARD_CHECKOUT_URL = 'checkout.wirecard.com';
     protected static $_PAYMENT_INIT_URL = 'https://checkout.wirecard.com/page/init-server.php';
 
-    protected static $_PLUGIN_VERSION = '2.8.1';
+    protected static $_PLUGIN_VERSION = '2.8.2';
 
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
