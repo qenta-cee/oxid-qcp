@@ -396,12 +396,6 @@ $aModule = array(
         ),
         array(
             'group' => 'wcp_iframe_settings',
-            'name' => 'bWcp_quick_UseIframe',
-            'type' => 'bool',
-            'value' => '1'
-        ),
-        array(
-            'group' => 'wcp_iframe_settings',
             'name' => 'bWcp_select_UseIframe',
             'type' => 'bool',
             'value' => '1'

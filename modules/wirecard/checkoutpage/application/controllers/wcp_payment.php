@@ -117,8 +117,6 @@ class wcp_payment extends wcp_payment_parent
                 return '<img src="' . $imgPath . 'przelewy24.jpg" />';
             case 'wcp_psc':
                 return '<img src="' . $imgPath . 'psc.png" />';
-            case 'wcp_quick':
-                return '<img src="' . $imgPath . 'quick.jpg" />';
             case 'wcp_sepa-dd':
                 return '<img src="' . $imgPath . 'sepa.png" />';
             case 'wcp_skrillwallet':

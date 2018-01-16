@@ -73,7 +73,6 @@ class wdceepayment extends oxUBase
         'TRUSTLY',
         'PBX',
         'PSC',
-        'QUICK',
         'PAYPAL',
         'EPAY_BG',
         'SEPA-DD',
