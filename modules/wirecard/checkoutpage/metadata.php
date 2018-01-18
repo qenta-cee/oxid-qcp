@@ -46,7 +46,7 @@ $aModule = array(
         'en' => 'Wirecard Checkout Page Payment Extension for Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support and sales information</strong><br /><a href="https://guides.wirecard.at/support" target="_blank">support</a><br /><a href="https://guides.wirecard.at/sales" target="_blank">sales</a></div></div>',
     ),
     'thumbnail' => 'picture.jpg',
-    'version' => '2.8.2',
+    'version' => '2.8.3',
     'author' => 'Wirecard',
     'email' => 'support@wirecard.at',
     'url' => 'http://www.wirecard.at',
@@ -391,12 +391,6 @@ $aModule = array(
         array(
             'group' => 'wcp_iframe_settings',
             'name' => 'bWcp_psc_UseIframe',
-            'type' => 'bool',
-            'value' => '1'
-        ),
-        array(
-            'group' => 'wcp_iframe_settings',
-            'name' => 'bWcp_quick_UseIframe',
             'type' => 'bool',
             'value' => '1'
         ),

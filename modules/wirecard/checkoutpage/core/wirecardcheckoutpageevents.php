@@ -64,7 +64,6 @@ class wirecardCheckoutPageEvents
             'TRUSTLY' => array('weight' => 18, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'PBX' => array('weight' => 19, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'PSC' => array('weight' => 20, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'QUICK' => array('weight' => 21, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'PAYPAL' => array('weight' => 22, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 1),
             'EPAY_BG' => array('weight' => 23, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'SEPA-DD' => array('weight' => 24, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 1),
