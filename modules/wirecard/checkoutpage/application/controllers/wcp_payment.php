@@ -64,6 +64,7 @@ class wcp_payment extends wcp_payment_parent
             $consumerDeviceId = md5($config->getConfigParam('sWcpCustomerId') . "_" . $timestamp);
             $_SESSION['wcp-consumerDeviceId'] = $consumerDeviceId;
         }
+
         $ratepay = '<script language="JavaScript">var di = {t:"'.$consumerDeviceId.'",v:"WDWL",l:"Checkout"};</script>';
         $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/'.$consumerDeviceId.'/di.js"></script>';
         $ratepay .= '<noscript><link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t='.$consumerDeviceId.'&v=WDWL&l=Checkout"></noscript>';
