@@ -5,6 +5,14 @@
 [![OXID eSales Enterprise Edition 5.2.9](https://img.shields.io/badge/OXID_EE-v5.2.9-green.svg)](http://www.oxid-esales.com/)
 [![PHP v5.6](https://img.shields.io/badge/php-v5.6-yellow.svg)](http://www.php.net)
 
+----
+**IMPORTANT INFORMATION**  
+You are visiting a shop extension which will become obsolete in the near future. It has been replaced by a new one with new features and enhanced functionality.   
+Please use our new shop extension available on [oxid.wirecard.com](https://oxid.wirecard.com), which will be maintained, updated and supported on a regular basis.  
+If you have any questions, please contact shop-systems-support@wirecard.com
+
+----
+
 Wirecard Checkout Page extension for OXID eSales 
 
 Our [Online Guides](https://guides.wirecard.at/) provide further information on payment methods and additional features. Please observe our [terms of use](https://guides.wirecard.at/shop_plugins:info#terms_of_use) regarding plugins.
