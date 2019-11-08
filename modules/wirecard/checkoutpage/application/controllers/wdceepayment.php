@@ -149,6 +149,7 @@ class wdceepayment extends oxUBase
     {
         $oConfig = $this->getConfig();
         $this->addGlobalParams();
+        $this->setIsOrderStep(true); // adds is-checkout body class
         $this->_aViewData['oxcmp_basket'] = $this->_getBasket();
         $this->_aViewData['wcpIFrameUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=wdceepayment&fnc=checkoutForm';
         $this->_sThisTemplate = 'page/checkout/wcp_checkout_iframe.tpl';
