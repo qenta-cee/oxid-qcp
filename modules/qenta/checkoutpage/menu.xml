@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN">
+        <MAINMENU id="mxshopsett">
+             <SUBMENU id="QCP_SUBMIT_CONFIG" cl="qcp_submit_config">
+
+             </SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>

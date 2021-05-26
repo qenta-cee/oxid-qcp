@@ -1,5 +1,0 @@
-[{if $payment->isWcpPaymethod($payment->oxuserpayments__oxpaymentsid->value)}]
-	[{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }] [{ $payment->getWcpRawPaymentDesc($payment->oxpayments__oxdesc->value) }] [{ if $basket->getPaymentCosts() }]([{ $basket->getFPaymentCosts() }] [{ $currency->sign}])[{/if}]
-[{else}]
-    [{$smarty.block.parent}]
-[{/if}]
