@@ -7,4 +7,7 @@
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
 */
 
+/**
+ * Metadata version
+ */
 $sVendorMetadataVersion = '2.0';

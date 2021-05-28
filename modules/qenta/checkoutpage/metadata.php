@@ -10,7 +10,7 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '2.0';
+$sMetadataVersion = '2.1';
 
 /**
  * Module information
@@ -24,9 +24,9 @@ $aModule = array(
     ),
     'thumbnail' => 'qenta.svg',
     'version' => '3.0.0',
-    'author' => 'QENTA',
+    'author' => 'QENTA Payment CEE GmbH',
     'email' => 'support@qenta.com',
-    'url' => 'https://qenta-cee.at',
+    'url' => 'https://www.qenta-cee.com/',
     'extend' => array(
         'order' => 'qenta/checkoutpage/application/controllers/qcp_order',
         'payment' => 'qenta/checkoutpage/application/controllers/qcp_payment',
@@ -37,9 +37,9 @@ $aModule = array(
         'oxuserpayment' => 'qenta/checkoutpage/application/models/qcp_oxuserpayment',
     ),
     'files' => array(
-        'out/lang/de/qcp_lang.php' => 'qenta/checkoutpage/out/lang/de/qcp_lang.php',
-        'out/lang/en/qcp_lang.php' => 'qenta/checkoutpage/out/lang/en/qcp_lang.php',
-        'qentapayment' => 'qenta/checkoutpage/application/controllers/qentapayment.php',
+        'out/lang/de/wcp_lang.php' => 'qenta/checkoutpage/out/lang/de/wcp_lang.php',
+        'out/lang/en/wcp_lang.php' => 'qenta/checkoutpage/out/lang/en/wcp_lang.php',
+        'wdceepayment' => 'qenta/checkoutpage/application/controllers/wdceepayment.php',
         'qcp_submit_config' => 'qenta/checkoutpage/application/controllers/admin/qcp_submit_config.php',
         'qcp_OrderDbGateway' => 'qenta/checkoutpage/application/models/dbgateways/qcp_orderdbgateway.php',
         'WirecardCEE_MobileDetect' => 'qenta/checkoutpage/vendor/wccee_mobile_detect.php',
@@ -88,7 +88,7 @@ $aModule = array(
         'page/checkout/qcp_checkout_iframe.tpl' => 'qenta/checkoutpage/out/tpl/page/checkout/qcp_checkout_iframe.tpl',
         'page/checkout/qcp_checkout_page.tpl' => 'qenta/checkoutpage/out/tpl/page/checkout/qcp_checkout_page.tpl',
         'page/checkout/qcp_return_iframe.tpl' => 'qenta/checkoutpage/out/tpl/page/checkout/qcp_return_iframe.tpl',
-        'email/html/qcpDoublePaymentForOrder.tpl' => 'qenta/checkoutpage/out/tpl/email/html/qcpDoublePaymentForOrder.tpl',
+        'email/html/wcpDoublePaymentForOrder.tpl' => 'qenta/checkoutpage/out/tpl/email/html/qcpDoublePaymentForOrder.tpl',
         'qcp_submit_config.tpl' => 'qenta/checkoutpage/application/views/admin/tpl/qcp_submit_config.tpl',
     ),
     'settings' => array(
@@ -143,31 +143,31 @@ $aModule = array(
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bQcpAutoDeposit',
+            'name' => 'bWcpAutoDeposit',
             'type' => 'bool',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'sQcpBackgroundColor',
+            'name' => 'sWcpBackgroundColor',
             'type' => 'str',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bQcpAutoDeposit',
+            'name' => 'bWcpAutoDeposit',
             'type' => 'bool',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bQcpDuplicateRequestCheck',
+            'name' => 'bWcpDuplicateRequestCheck',
             'type' => 'bool',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'sQcpConfirmMail',
+            'name' => 'sWcpConfirmMail',
             'type' => 'str',
             'value' => ''
         ),

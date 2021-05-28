@@ -14,16 +14,16 @@
     [{assign var="iBirthdayYear" value=0}]
 [{/if}]
 
-[{if !isset($qcsPaymentCount)}]
-    [{$oView->getQcpRatePayConsumerDeviceId()}]
-    [{ assign var="qcpPaymentCount" value="1"}]
+[{if !isset($wcsPaymentCount)}]
+    [{$oView->getWcpRatePayConsumerDeviceId()}]
+    [{ assign var="wcpPaymentCount" value="1"}]
 [{/if}]
 
-[{if $oView->isQcpPaymethod($sPaymentID)}]
+[{if $oView->isWcpPaymethod($sPaymentID)}]
     <dl>
         <dt>
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
-            <label for="payment_[{$sPaymentID}]">[{$oView->getQcpPaymentLogo($sPaymentID)}]<b>[{ $oView->getQcpRawPaymentDesc($paymentmethod->oxpayments__oxdesc->value)}]</b>
+            <label for="payment_[{$sPaymentID}]">[{$oView->getWcpPaymentLogo($sPaymentID)}]<b>[{ $oView->getWcpRawPaymentDesc($paymentmethod->oxpayments__oxdesc->value)}]</b>
                 [{if $paymentmethod->getPrice()}]
                     [{assign var="oPaymentPrice" value=$paymentmethod->getPrice() }]
                     [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
@@ -45,7 +45,7 @@
             <ul>
                 [{foreach from=$aDynValues item=value name=PaymentDynValues}]
                 <li>
-                    <label>[{$oView->getQcpPaymentLogo($paymentmethod)}] [{ $value->name}]</label>
+                    <label>[{$oView->getWcpPaymentLogo($paymentmethod)}] [{ $value->name}]</label>
                     <input id="[{$sPaymentID}]_[{$smarty.foreach.PaymentDynValues.iteration}]" type="text" class="textbox" size="20" maxlength="64" name="dynvalue[[{$value->name}]]" value="[{ $value->value}]">
                 </li>
                 [{/foreach}]
@@ -60,14 +60,13 @@
             [{/if}]
             [{/block}]
 
-            [{if $bShowDobField && $oView->hasQcpDobField($sPaymentID)}]
+            [{if $bShowDobField && $oView->hasWcpDobField($sPaymentID)}]
                 <div class="desc" id="[{$sPaymentID}]_desc">
 
                 <ul class="form clear">
                 <li class="oxDate[{if $aErrors.oxuser__oxbirthdate}] oxInValid[{/if}]">
                     <label class="req">[{ oxmultilang ident="BIRTHDATE" suffix="COLON" }]</label>
-                    <select class='oxMonth
-                     js-oxValidate_date js-oxValidate_notEmpty' name='[{$sPaymentID}]_iBirthdayMonth'>
+                    <select class='oxMonth js-oxValidate js-oxValidate_date js-oxValidate_notEmpty' name='[{$sPaymentID}]_iBirthdayMonth'>
                         <option value="" >-</option>
                         [{section name="month" start=1 loop=13 }]
                         <option value="[{$smarty.section.month.index}]" [{if $iBirthdayMonth == $smarty.section.month.index}] selected="selected" [{/if}]>
@@ -94,7 +93,7 @@
             </div>
             [{/if}]
 
-            [{if $sPaymentID=='qcp_eps'}]
+            [{if $sPaymentID=='wcp_eps'}]
             <div class="desc" id="[{$sPaymentID}]_desc">
                 <ul class="form clear">
                     <select name="[{$sPaymentID}]_financialInstitution">
@@ -135,7 +134,7 @@
             </div>
             [{/if}]
 
-            [{if $sPaymentID=='qcp_idl'}]
+            [{if $sPaymentID=='wcp_idl'}]
             <div class="desc" id="[{$sPaymentID}]_desc">
                 <ul class="form clear">
                     <select name="[{$sPaymentID}]_financialInstitution">
@@ -155,7 +154,7 @@
             [{/if}]
 
 
-            [{if $oView->hasQcpVatIdField($sPaymentID) && $bShowVatIdField}]
+            [{if $oView->hasWcpVatIdField($sPaymentID) && $bShowVatIdField}]
             <div class="desc">
                 <ul class="form clear">
                     <li [{if $aErrors.oxuser__oxustid}]class="oxInValid"[{/if}]>
@@ -170,8 +169,8 @@
             [{/if}]
 
 
-            [{if $oView->showQcpTrustedShopsCheckbox($sPaymentID)}]
-                <input id="payolutionTerms" class='js-oxValidate js-oxValidate_notEmpty' name='payolutionTerms' type="checkbox" value="1" />[{ $oView->getQcpPayolutionTerms() }]
+            [{if $oView->showWcpTrustedShopsCheckbox($sPaymentID)}]
+                <input id="payolutionTerms" class='js-oxValidate js-oxValidate_notEmpty' name='payolutionTerms' type="checkbox" value="1" />[{ $oView->getWcpPayolutionTerms() }]
             [{/if}]
 
         </dd>

@@ -16,7 +16,7 @@ class qcp_order extends qcp_order_parent
     }
 
     /**
-     * Hookpoint. check if it's an qcp Order.
+     * Hookpoint. check if it's an wcp Order.
      * @param $iSuccess - the order success state.
      * @return String - checkoutUrl or parent return.
      * @see order
@@ -25,10 +25,10 @@ class qcp_order extends qcp_order_parent
     {
         $oPayment = $this->getPayment();
 
-        if ($oPayment && qentapayment::isValidQCPPayment($oPayment->oxpayments__oxid->value)) {
+        if ($oPayment && wdceepayment::isValidWCPPayment($oPayment->oxpayments__oxid->value)) {
             if (is_numeric($iSuccess) && ($iSuccess == oxOrder::ORDER_STATE_ORDEREXISTS || $iSuccess == oxOrder::ORDER_STATE_OK)) {
                 $oSession = $this->getSession();
-                $oSession->setVariable('qcpBasket', serialize($oSession->getBasket()));
+                $oSession->setVariable('wcpBasket', serialize($oSession->getBasket()));
                 $oSession->delBasket();
                 $oPayment = $this->getPayment();
                 $oOrder = $this->_getOrder();
@@ -36,18 +36,18 @@ class qcp_order extends qcp_order_parent
                 /** @var qcp_OrderDbGateway $oDbOrder */
                 $oDbOrder = oxNew('qcp_OrderDbGateway');
                 $aOrderData = Array(
-                    'BASKET' => $oSession->getVariable('qcpBasket'),
+                    'BASKET' => $oSession->getVariable('wcpBasket'),
                     'OXORDERID' => $oOrder->getId()
                 );
                 $oDbOrder->insert($aOrderData);
 
-                $checkoutType = qentapayment::getCheckoutType(str_replace('qcp_', '',
+                $checkoutType = wdceepayment::getCheckoutType(str_replace('wcp_', '',
                     $oPayment->oxpayments__oxid->value));
 
                 if ($checkoutType == 'IFRAME') {
-                    return 'qentapayment?fnc=checkoutIFrame';
+                    return 'wdceepayment?fnc=checkoutIFrame';
                 } else {
-                    return 'qentapayment?fnc=checkoutForm';
+                    return 'wdceepayment?fnc=checkoutForm';
                 }
             }
         }
@@ -70,13 +70,13 @@ class qcp_order extends qcp_order_parent
     }
 
 
-    public function isQcpPaymethod($sPaymentID)
+    public function isWcpPaymethod($sPaymentID)
     {
-        return qcp_payment::isQcpPaymethod($sPaymentID);
+        return qcp_payment::isWcpPaymethod($sPaymentID);
     }
 
-    public function getQcpRawPaymentDesc($paymethodNameWithPrefix)
+    public function getWcpRawPaymentDesc($paymethodNameWithPrefix)
     {
-        return qcp_payment::getQcpRawPaymentDesc($paymethodNameWithPrefix);
+        return qcp_payment::getWcpRawPaymentDesc($paymethodNameWithPrefix);
     }
 }

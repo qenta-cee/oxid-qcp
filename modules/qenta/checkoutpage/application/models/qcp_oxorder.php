@@ -1,16 +1,39 @@
 <?php
 /**
- * Shop System Plugins
- * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins:info
- * - License can be found under:
- * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ * Shop System Plugins - Terms of Use
+ *
+ * The plugins offered are provided free of charge by Wirecard Central Eastern Europe GmbH
+ * (abbreviated to Wirecard CEE) and are explicitly not part of the Wirecard CEE range of
+ * products and services.
+ *
+ * They have been tested and approved for full functionality in the standard configuration
+ * (status on delivery) of the corresponding shop system. They are under General Public
+ * License Version 2 (GPLv2) and can be used, developed and passed on to third parties under
+ * the same terms.
+ *
+ * However, Wirecard CEE does not provide any guarantee or accept any liability for any errors
+ * occurring when used in an enhanced, customized shop system configuration.
+ *
+ * Operation in an enhanced, customized configuration is at your own risk and requires a
+ * comprehensive test phase by the user of the plugin.
+ *
+ * Customers use the plugins at their own risk. Wirecard CEE does not guarantee their full
+ * functionality neither does Wirecard CEE assume liability for any disadvantages related to
+ * the use of the plugins. Additionally, Wirecard CEE does not guarantee the full functionality
+ * for customized shop systems or installed plugins of other vendors of plugins within the same
+ * shop system.
+ *
+ * Customers are responsible for testing the plugin's functionality before starting productive
+ * operation.
+ *
+ * By installing the plugin into the shop system the customer agrees to these terms of use.
+ * Please do not use the plugin if you do not agree to these terms of use!
+ */
 
 class qcp_oxorder extends qcp_oxorder_parent
 {
 
-    public function qcpCheckOrderExists()
+    public function wcpCheckOrderExists()
     {
         $sOxId = $this->_sOXID;
 
@@ -28,7 +51,7 @@ class qcp_oxorder extends qcp_oxorder_parent
      */
     protected function _sendOrderByEmail($oUser = null, $oBasket = null, $oPayment = null)
     {
-        if (qentapayment::isValidQCPPayment($this->oxorder__oxpaymenttype->value)) {
+        if (wdceepayment::isValidWCPPayment($this->oxorder__oxpaymenttype->value)) {
             return self::ORDER_STATE_OK;
         }
 
@@ -36,7 +59,7 @@ class qcp_oxorder extends qcp_oxorder_parent
     }
 
     // will be send by confirm
-    public function sendQentaCheckoutPageOrderByEmail($oBasket, $oUserPayment = null)
+    public function sendWirecardCheckoutPageOrderByEmail($oBasket, $oUserPayment = null)
     {
         $sUserId = $this->oxorder__oxuserid;
         /** @var oxUser $oUser */

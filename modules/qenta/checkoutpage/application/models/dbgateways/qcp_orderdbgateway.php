@@ -28,7 +28,7 @@ class qcp_OrderDbGateway
             $aSql[] = '`' . $sField . '` = ' . $oDb->quote($sData);
         }
 
-        $sSql = 'INSERT INTO `qentacheckoutpage_order` SET ';
+        $sSql = 'INSERT INTO `wirecardcheckoutpage_order` SET ';
         $sSql .= implode(', ', $aSql);
 
         $oDb->execute($sSql);
@@ -45,7 +45,7 @@ class qcp_OrderDbGateway
     public function loadByOrderId($sOrderId)
     {
         $oDb = $this->_getDb();
-        $aData = $oDb->getRow('SELECT * FROM `qentacheckoutpage_order` WHERE `OXORDERID` = ' . $oDb->quote($sOrderId));
+        $aData = $oDb->getRow('SELECT * FROM `wirecardcheckoutpage_order` WHERE `OXORDERID` = ' . $oDb->quote($sOrderId));
 
         return $aData;
     }
@@ -59,7 +59,7 @@ class qcp_OrderDbGateway
     {
         $oDb = $this->_getDb();
 
-        $blResult = $oDb->execute('DELETE FROM `qentacheckoutpage_order` WHERE `OXID` = ' . $oDb->quote($sOxid));
+        $blResult = $oDb->execute('DELETE FROM `wirecardcheckoutpage_order` WHERE `OXID` = ' . $oDb->quote($sOxid));
 
         return $blResult;
     }

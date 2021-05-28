@@ -1,24 +1,47 @@
 <?php
 /**
- * Shop System Plugins
- * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins:info
- * - License can be found under:
- * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ * Shop System Plugins - Terms of Use
+ *
+ * The plugins offered are provided free of charge by Wirecard Central Eastern Europe GmbH
+ * (abbreviated to Wirecard CEE) and are explicitly not part of the Wirecard CEE range of
+ * products and services.
+ *
+ * They have been tested and approved for full functionality in the standard configuration
+ * (status on delivery) of the corresponding shop system. They are under General Public
+ * License Version 2 (GPLv2) and can be used, developed and passed on to third parties under
+ * the same terms.
+ *
+ * However, Wirecard CEE does not provide any guarantee or accept any liability for any errors
+ * occurring when used in an enhanced, customized shop system configuration.
+ *
+ * Operation in an enhanced, customized configuration is at your own risk and requires a
+ * comprehensive test phase by the user of the plugin.
+ *
+ * Customers use the plugins at their own risk. Wirecard CEE does not guarantee their full
+ * functionality neither does Wirecard CEE assume liability for any disadvantages related to
+ * the use of the plugins. Additionally, Wirecard CEE does not guarantee the full functionality
+ * for customized shop systems or installed plugins of other vendors of plugins within the same
+ * shop system.
+ *
+ * Customers are responsible for testing the plugin's functionality before starting productive
+ * operation.
+ *
+ * By installing the plugin into the shop system the customer agrees to these terms of use.
+ * Please do not use the plugin if you do not agree to these terms of use!
+ */
 
 /**
  * viewscript to render payment-redirect
  * if order-view would have been used there would be some problems with
  * low-stock items
  */
-class qentapayment extends oxUBase
+class wdceepayment extends oxUBase
 {
     protected $_oOrder = null;
 
     protected $_oBasket = null;
 
-    protected static $_PAYMENT_QENTA_CHECKOUT_URL = 'api.qenta.com';
+    protected static $_PAYMENT_WIRECARD_CHECKOUT_URL = 'api.qenta.com';
     protected static $_PAYMENT_INIT_URL = 'https://api.qenta.com/page/init-server.php';
 
     protected static $_PLUGIN_VERSION = '3.0.0';
@@ -76,13 +99,10 @@ class qentapayment extends oxUBase
         }
 
         $oOrder = $this->_getOrder();
-        var_dump('order' . $oOrder);
-        // not a valid order or qcp payment. redirect to payment selection.
-        if (!$oOrder || !self::isValidQCPPayment($oOrder->oxorder__oxpaymenttype->value)) {
+        // not a valid order or wcp payment. redirect to payment selection.
+        if (!$oOrder || !self::isValidWCPPayment($oOrder->oxorder__oxpaymenttype->value)) {
             self::paymentRedirect();
         }
-
-        print_r('prosao');
 
         parent::init();
     }
@@ -93,7 +113,7 @@ class qentapayment extends oxUBase
      * @param $text log
      *            text
      */
-    protected function _qcpConfirmLogging($text)
+    protected function _wcpConfirmLogging($text)
     {
         $date = date("Y-m-d H:i:s");
 
@@ -130,7 +150,7 @@ class qentapayment extends oxUBase
         $oConfig = $this->getConfig();
         $this->addGlobalParams();
         $this->_aViewData['oxcmp_basket'] = $this->_getBasket();
-        $this->_aViewData['qcpIFrameUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=qentapayment&fnc=checkoutForm';
+        $this->_aViewData['qcpIFrameUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=wdceepayment&fnc=checkoutForm';
         $this->_sThisTemplate = 'page/checkout/qcp_checkout_iframe.tpl';
     }
 
@@ -145,12 +165,12 @@ class qentapayment extends oxUBase
         $oOrder = $this->_setOrderFolder($oOrder, $oConfig->getConfigParam('sQcpCheckoutFolder'));
         $oOrder->save();
 
-        $request = $this->_createQCPRequestArray($oOrder);
+        $request = $this->_createWCPRequestArray($oOrder);
 
         $initResult = $this->_initPaymentRequest($request);
 
         if ($initResult['result'] == 'OK') {
-            $this->_aViewData['qcpRequest'] = $request;
+            $this->_aViewData['wcpRequest'] = $request;
             $this->_aViewData['qcpPaymentUrl'] = $initResult['redirectUrl'];
             $this->_sThisTemplate = 'page/checkout/qcp_checkout_page.tpl';
         } else {
@@ -160,14 +180,14 @@ class qentapayment extends oxUBase
             $oOrder = $this->_setOrderFolder($oOrder, $failureFolder);
             $oOrder->save();
 
-            $oSession->setBasket(unserialize($oSession->getVariable('qcpBasket')));
+            $oSession->setBasket(unserialize($oSession->getVariable('wcpBasket')));
             // force oxid to use a new Order for next try.
             $oSession->deleteVariable('sess_challenge');
-            // clean up qcpPaymentState
-            $oSession->deleteVariable('qcpPaymentState');
+            // clean up wcpPaymentState
+            $oSession->deleteVariable('wcpPaymentState');
             // redirect to payment page with correct error.
 
-            $oSession->setVariable('qcp_payerrortext', $initResult['message']);
+            $oSession->setVariable('wcp_payerrortext', $initResult['message']);
             if ($request['checkoutType'] == 'IFRAME') {
                 $this->_sThisTemplate = 'page/checkout/qcp_return_iframe.tpl';
 
@@ -186,7 +206,7 @@ class qentapayment extends oxUBase
     {
         //perform init request and get redirect URL
         $content = http_build_query($request);
-        $header = "Host: " . self::$_PAYMENT_QENTA_CHECKOUT_URL . "\r\n"
+        $header = "Host: " . self::$_PAYMENT_WIRECARD_CHECKOUT_URL . "\r\n"
             . "User-Agent: " . $_SERVER["HTTP_USER_AGENT"] . "\r\n"
             . "Content-Type: application/x-www-form-urlencoded\r\n"
             . "Content-Length: " . strlen($content) . "\r\n"
@@ -204,7 +224,7 @@ class qentapayment extends oxUBase
 
         if (!$result = file_get_contents(self::$_PAYMENT_INIT_URL, false, $context)) {
             $oLang = oxRegistry::get('oxLang');
-            $response["message"] = $oLang->translateString('QENTA_CHECKOUT_PAGE_COMMUNICATION_ERROR',
+            $response["message"] = $oLang->translateString('WIRECARD_CHECKOUT_PAGE_COMMUNICATION_ERROR',
                 $oLang->getBaseLanguage());
         } else {
             parse_str($result, $response);
@@ -258,13 +278,13 @@ class qentapayment extends oxUBase
     }
 
     /**
-     * creates an array used for QCP Checkout.
+     * creates an array used for WCP Checkout.
      *
      * @param $oOrder -
      *            the oxOrder Object
      * @return String[] - Array with all Requestparameters
      */
-    protected function _createQCPRequestArray($oOrder)
+    protected function _createWCPRequestArray($oOrder)
     {
         $oConfig = $this->getConfig();
         $returnUrl = html_entity_decode($oConfig->getShopCurrentUrl());
@@ -273,10 +293,10 @@ class qentapayment extends oxUBase
         $confirmUrl = $sUrl;
         $shopName = 'Oxid ' . $oConfig->getEdition();
         $shopVersion = $oConfig->getVersion() . ' ' . $oConfig->getRevision();
-        $pluginName = 'QENTA_QCP';
+        $pluginName = 'WirecardCEE_WCP';
         $pluginVersion = self::$_PLUGIN_VERSION;
         $versionString = base64_encode($shopName . '; ' . $shopVersion . '; mobile detect ' . WirecardCEE_MobileDetect::VERSION . '; ' . $pluginName . '; ' . $pluginVersion);
-        $paymenttypeShop = strtoupper(str_replace('qcp_', '', $oOrder->oxorder__oxpaymenttype->value));
+        $paymenttypeShop = strtoupper(str_replace('wcp_', '', $oOrder->oxorder__oxpaymenttype->value));
         $paymenttype = $paymenttypeShop;
 
         //change invoice and installment paymenttypes
@@ -308,7 +328,7 @@ class qentapayment extends oxUBase
 
         oxRegistry::getUtils()->writeToLog(__METHOD__. ': init payment with ' . $paymenttype . "\n", self::$_LOG_FILE_NAME);
 
-        // QCP RequestParameters
+        // WCP RequestParameters
         $request['customerId'] = $this->getCustomerId();
         $request['language'] = oxRegistry::getLang()->getLanguageAbbr();
         $request['paymenttype'] = $paymenttype;
@@ -326,7 +346,7 @@ class qentapayment extends oxUBase
         $request['consumerUserAgent'] = $_SERVER['HTTP_USER_AGENT'];
 
         $request['pendingUrl'] = $returnUrl;
-        $request['duplicateRequestCheck'] = ($oConfig->getConfigParam('bQcpDuplicateRequestCheck') == 1) ? 'yes' : 'no';
+        $request['duplicateRequestCheck'] = ($oConfig->getConfigParam('bWcpDuplicateRequestCheck') == 1) ? 'yes' : 'no';
 
         $request['orderReference'] = "aa".$orderReference;
         $request['customerStatement'] = $customerStatementString;
@@ -334,26 +354,26 @@ class qentapayment extends oxUBase
         $request['displayText'] = $oConfig->getConfigParam('sQcpDisplayText');
         $request['imageUrl'] = $oConfig->getConfigParam('sQcpImageUrl');
 
-        $request['autoDeposit'] = ($oConfig->getConfigParam('bQcpAutoDeposit') == 1) ? 'yes' : 'no';
-        $request['confirmMail'] = $oConfig->getConfigParam('bQcpConfirmMail');
+        $request['autoDeposit'] = ($oConfig->getConfigParam('bWcpAutoDeposit') == 1) ? 'yes' : 'no';
+        $request['confirmMail'] = $oConfig->getConfigParam('bWcpConfirmMail');
         $request['maxRetries'] = $oConfig->getConfigParam('sQcpMaxRetries');
         $request['paymenttypeSortOrder'] = $oConfig->getConfigParam('sQcpPaymentTypeSortOrder');
 
         $request['shopId'] = $this->getShopId();
-        $request['confirmMail'] = $oConfig->getConfigParam('sQcpConfirmMail');
+        $request['confirmMail'] = $oConfig->getConfigParam('sWcpConfirmMail');
 
         $request['lang'] = oxRegistry::getLang()->getLanguageAbbr();
         $request['langId'] = oxRegistry::getLang()->getBaseLanguage();
-        $request['cl'] = 'qentapayment';
+        $request['cl'] = 'wdceepayment';
         $request['fnc'] = 'returnPage';
         $request['pluginVersion'] = $versionString;
-        $request['backgroundColor'] = $oConfig->getConfigParam('sQcpBackgroundColor');
+        $request['backgroundColor'] = $oConfig->getConfigParam('sWcpBackgroundColor');
         $request['oxid_orderid'] = $oOrder->getId();
         $request['consumerMerchantCrmId'] = md5($oOrder->oxorder__oxbillemail->value);
 
-        if (isset($_SESSION['qcp-consumerDeviceId'])) {
-            $request['consumerDeviceId'] = $_SESSION['qcp-consumerDeviceId'];
-            unset($_SESSION['qcp-consumerDeviceId']);
+        if (isset($_SESSION['wcp-consumerDeviceId'])) {
+            $request['consumerDeviceId'] = $_SESSION['wcp-consumerDeviceId'];
+            unset($_SESSION['wcp-consumerDeviceId']);
         }
 
         if($paymenttype === 'MASTERPASS') {
@@ -370,7 +390,7 @@ class qentapayment extends oxUBase
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
-                if ($paymenttypeShop == "qcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
+                if ($paymenttypeShop == "wcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
                     $request['companyVatId'] = $oUser->oxuser__oxustid->value;
                     $request['companyName'] = $oUser->oxuser__oxcompany->value;
                 } else {
@@ -396,7 +416,7 @@ class qentapayment extends oxUBase
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
-                if ($paymenttypeShop == "qcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
+                if ($paymenttypeShop == "wcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
                     $request['companyVatId'] = $oUser->oxuser__oxustid->value;
                     $request['companyName'] = $oUser->oxuser__oxcompany->value;
                 } else {
@@ -499,7 +519,7 @@ class qentapayment extends oxUBase
 
         $request['checkoutType'] = self::getCheckoutType($paymenttypeShop);
         if ($request['checkoutType'] == 'IFRAME') {
-            $request['windowName'] = 'qcpIFrame';
+            $request['windowName'] = 'wcpIFrame';
         }
 
         if ($this->getConfig()->getConfigParam('bQcpDisableDeviceDetection') == 1) {
@@ -511,7 +531,7 @@ class qentapayment extends oxUBase
                 }
             }
         }
-        // remove mobile detect
+
         if ($this->getConfig()->getConfigParam('bQcpUseLayout') == 1) {
             $request['layout'] = self::_getClientDevice();
         }
@@ -545,10 +565,10 @@ class qentapayment extends oxUBase
     public function returnPage()
     {
         if (isset($_POST['paymentState'])) {
-            oxRegistry::getSession()->setVariable('qcpPaymentState', htmlentities($_POST['paymentState']));
+            oxRegistry::getSession()->setVariable('wcpPaymentState', htmlentities($_POST['paymentState']));
         }
         if (isset($_POST['consumerMessage'])) {
-            oxRegistry::getSession()->setVariable('qcpPaymentConsumerMessage', htmlentities($_POST['consumerMessage']));
+            oxRegistry::getSession()->setVariable('wcpPaymentConsumerMessage', htmlentities($_POST['consumerMessage']));
         }
         if (isset($_GET['action']) && $_GET['action'] == 'confirm') {
             $this->_confirmProcess(true);
@@ -580,7 +600,7 @@ class qentapayment extends oxUBase
             $oLang->setBaseLanguage((int)$_POST['langId']);
         }
 
-        $this->_aViewData['qcpReturnUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=qentapayment&fnc=returnPage';
+        $this->_aViewData['wcpReturnUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=wdceepayment&fnc=returnPage';
         $this->_sThisTemplate = 'page/checkout/qcp_return_iframe.tpl';
     }
 
@@ -605,38 +625,38 @@ class qentapayment extends oxUBase
             } else {
                 $oSession = $this->getSession();
 
-                $paymentState = is_null($oSession->getVariable('qcpPaymentState')) ? 'FAILURE' : $oSession->getVariable('qcpPaymentState');
-                $oSession->setBasket(unserialize($oSession->getVariable('qcpBasket')));
+                $paymentState = is_null($oSession->getVariable('wcpPaymentState')) ? 'FAILURE' : $oSession->getVariable('wcpPaymentState');
+                $oSession->setBasket(unserialize($oSession->getVariable('wcpBasket')));
                 // force oxid to use a new Order for next try.
                 $oSession->deleteVariable('sess_challenge');
-                // clean up qcpPaymentState
-                $oSession->deleteVariable('qcpPaymentState');
+                // clean up wcpPaymentState
+                $oSession->deleteVariable('wcpPaymentState');
                 // redirect to payment page with correct error.
 
                 $oLang = oxRegistry::get('oxLang');
                 $iLangId = $oLang->getBaseLanguage();
 
                 if ($paymentState == 'CANCEL') {
-                    $oSession->setVariable('qcp_payerrortext',
+                    $oSession->setVariable('wcp_payerrortext',
                         $oLang->translateString('qcp_payment_canceled', $iLangId));
                 } elseif ($paymentState == 'FAILURE') {
                     $message = $oLang->translateString('qcp_payment_failure', $iLangId);
-                    if ($oSession->getVariable('qcpPaymentConsumerMessage')) {
-                        $message .= ' (' . $oSession->getVariable('qcpPaymentConsumerMessage') . ')';
+                    if ($oSession->getVariable('wcpPaymentConsumerMessage')) {
+                        $message .= ' (' . $oSession->getVariable('wcpPaymentConsumerMessage') . ')';
                     }
 
-                    $oSession->setVariable('qcp_payerrortext', $message);
+                    $oSession->setVariable('wcp_payerrortext', $message);
                 }
-                $oSession->deleteVariable('qcpPaymentConsumerMessage');
+                $oSession->deleteVariable('wcpPaymentConsumerMessage');
 
                 self::paymentRedirect($paymentState, $iLangId);
             }
         }
     }
 
-    public static function isValidQCPPayment($sPaymentType)
+    public static function isValidWCPPayment($sPaymentType)
     {
-        return (bool)in_array(str_replace('QCP_', '', strtoupper($sPaymentType)), self::$_VALID_PAYMENT_TYPES);
+        return (bool)in_array(str_replace('WCP_', '', strtoupper($sPaymentType)), self::$_VALID_PAYMENT_TYPES);
     }
 
     /**
@@ -666,8 +686,8 @@ class qentapayment extends oxUBase
                     $tempArray[(string)$key] = $this->_prepareValueForFingerprint($_POST[$key]);
                 } else {
                     if ($this->_isPaid($oOrder)) {
-                        $this->_qcpConfirmLogging('Order has allready been paid.');
-                        $this->_qcpConfirmLogging('2nd confirmation attempt failed at fingerPrintSeed creation');
+                        $this->_wcpConfirmLogging('Order has allready been paid.');
+                        $this->_wcpConfirmLogging('2nd confirmation attempt failed at fingerPrintSeed creation');
                         return array('', 'Order has allready been paid.');
                     } else {
                         $oOrder->cancelOrder();
@@ -713,18 +733,18 @@ class qentapayment extends oxUBase
         if (isset($_POST['paymentState'])) {
             if ($_POST['paymentState'] == 'SUCCESS') {
 
-                $this->_qcpConfirmLogging('Payment state: Success - generating response fingerprint seed');
+                $this->_wcpConfirmLogging('Payment state: Success - generating response fingerprint seed');
                 list($seed, $error) = $this->_getResponseFingerprintSeed($oOrder);
                 if ($error) {
                     if ($showConfirmResponse) {
-                        die($this->_qcpConfirmResponse($error));
+                        die($this->_wcpConfirmResponse($error));
                     } else {
                         return $error;
                     }
                 }
                 if (strcasecmp($seed, $_POST['responseFingerprint']) == 0) {
                     if (!$this->_isPaid($oOrder)) {
-                        $this->_qcpConfirmLogging('Fingerprints match. Setting order status to PAID');
+                        $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PAID');
 
                         $sOXID = $_POST['oxid_orderid'];
                         /** @var qcp_OrderDbGateway $oDbOrder */
@@ -745,7 +765,7 @@ class qentapayment extends oxUBase
 
                         //add prefix to info keys
                         foreach ($aInfo as $k => $v) {
-                            $aInfo['QCP_' . $k] = mysql_real_escape_string($v);
+                            $aInfo['WCP_' . $k] = mysql_real_escape_string($v);
                             unset($aInfo[$k]);
                         }
 
@@ -757,8 +777,8 @@ class qentapayment extends oxUBase
 
                         $sClass = "qcp_oxbasket";
                         $oBasket = unserialize(preg_replace('/^O:\d+:"[^"]++"/', 'O:' . strlen($sClass) . ':"' . $sClass . '"', $aOrderData['BASKET']));
-                        $oOrder->sendQentaCheckoutPageOrderByEmail($oBasket, $oOxUserPayment);
-                        $this->_qcpConfirmLogging('Email notification was send.');
+                        $oOrder->sendWirecardCheckoutPageOrderByEmail($oBasket, $oOxUserPayment);
+                        $this->_wcpConfirmLogging('Email notification was send.');
                         $oDbOrder->delete($aOrderData['OXID']);
 
                         $oOrder->oxorder__oxtransstatus = new oxField('PAID');
@@ -772,19 +792,19 @@ class qentapayment extends oxUBase
                         $successFolder = $this->getConfig()->getConfigParam('sQcpSuccessFolder');
                         $oOrder = $this->_setOrderFolder($oOrder, $successFolder);
                         if (!$oOrder->save()) {
-                            $this->_qcpConfirmLogging('Order status update failed.');
+                            $this->_wcpConfirmLogging('Order status update failed.');
                             $confirmResponseMessage = 'Order status update failed.';
                         }
 
                         if ($showConfirmResponse) {
-                            die($this->_qcpConfirmResponse($confirmResponseMessage));
+                            die($this->_wcpConfirmResponse($confirmResponseMessage));
                         }
                     } else {
                         $oxEmail = oxnew('oxemail');
-                        $oxEmail->sendQCPDoublePaymentMail($oOrder->oxorder__oxordernr->value,
+                        $oxEmail->sendWCPDoublePaymentMail($oOrder->oxorder__oxordernr->value,
                             $oOrder->oxorder_oxtransid->rawValue, mysql_real_escape_string($_POST['orderNumber']));
                         if ($showConfirmResponse) {
-                            die($this->_qcpConfirmResponse());
+                            die($this->_wcpConfirmResponse());
                         }
                     }
                 } else {
@@ -802,12 +822,12 @@ class qentapayment extends oxUBase
                 }
             } else {
                 if ($_POST['paymentState'] == 'PENDING') {
-                    $this->_qcpConfirmLogging('Payment state: Pending - generating response fingerprint seed');
+                    $this->_wcpConfirmLogging('Payment state: Pending - generating response fingerprint seed');
 
                     list($seed, $error) = $this->_getResponseFingerprintSeed($oOrder);
                     if ($error) {
                         if ($showConfirmResponse) {
-                            die($this->_qcpConfirmResponse($error));
+                            die($this->_wcpConfirmResponse($error));
                         } else {
                             return $error;
                         }
@@ -815,7 +835,7 @@ class qentapayment extends oxUBase
 
                     if (strcasecmp($seed, $_POST['responseFingerprint']) == 0) {
                         if (!$this->_isPaid($oOrder)) {
-                            $this->_qcpConfirmLogging('Fingerprints match. Setting order status to PENDING');
+                            $this->_wcpConfirmLogging('Fingerprints match. Setting order status to PENDING');
 
                             $sendEmail = !in_array($oOrder->oxorder__oxtransstatus, array('PENDING'));
 
@@ -836,7 +856,7 @@ class qentapayment extends oxUBase
 
                             //add prefix to info keys
                             foreach ($aInfo as $k => $v) {
-                                $aInfo['QCP_' . $k] = mysql_real_escape_string($v);
+                                $aInfo['WCP_' . $k] = mysql_real_escape_string($v);
                                 unset($aInfo[$k]);
                             }
 
@@ -850,26 +870,26 @@ class qentapayment extends oxUBase
                             $pendingFolder = $this->getConfig()->getConfigParam('sQcpPendingFolder');
                             $oOrder = $this->_setOrderFolder($oOrder, $pendingFolder);
                             if (!$oOrder->save()) {
-                                $this->_qcpConfirmLogging('Order status update failed.');
+                                $this->_wcpConfirmLogging('Order status update failed.');
                                 $confirmResponseMessage = 'Order status update failed.';
                             }
 
                             $sClass = "qcp_oxbasket";
                             $oBasket = unserialize(preg_replace('/^O:\d+:"[^"]++"/', 'O:' . strlen($sClass) . ':"' . $sClass . '"', $aOrderData['BASKET']));
                             if($sendEmail) {
-                                $oOrder->sendQentaCheckoutPageOrderByEmail($oBasket, $oOxUserPayment);
-                                $this->_qcpConfirmLogging('Email notification was send.');
+                                $oOrder->sendWirecardCheckoutPageOrderByEmail($oBasket, $oOxUserPayment);
+                                $this->_wcpConfirmLogging('Email notification was send.');
                             }
 
                             if ($showConfirmResponse) {
-                                die($this->_qcpConfirmResponse($confirmResponseMessage));
+                                die($this->_wcpConfirmResponse($confirmResponseMessage));
                             }
                         } else {
                             $oxEmail = oxnew('oxemail');
-                            $oxEmail->sendQCPDoublePaymentMail($oOrder->oxorder__oxordernr->value,
+                            $oxEmail->sendWCPDoublePaymentMail($oOrder->oxorder__oxordernr->value,
                             $oOrder->oxorder_oxtransid->rawValue, mysql_real_escape_string($_POST['orderNumber']));
                             if ($showConfirmResponse) {
-                                die($this->_qcpConfirmResponse());
+                                die($this->_wcpConfirmResponse());
                             }
                         }
                     } else {
@@ -881,7 +901,7 @@ class qentapayment extends oxUBase
                         $confirmResponseMessage = $oOrder->save() ? 'Fingerprint is Invalid.' : 'Fingerprint is Invalid. Order status update failed.';
 
                         if ($showConfirmResponse) {
-                            die($this->_qcpConfirmResponse($confirmResponseMessage));
+                            die($this->_wcpConfirmResponse($confirmResponseMessage));
                         }
                     }
                 } else {
@@ -896,7 +916,7 @@ class qentapayment extends oxUBase
                             }
 
                             if ($showConfirmResponse) {
-                                die($this->_qcpConfirmResponse($confirmResponseMessage));
+                                die($this->_wcpConfirmResponse($confirmResponseMessage));
                             }
                         } else {
                             if ($_POST['paymentState'] == 'FAILURE') {
@@ -910,11 +930,11 @@ class qentapayment extends oxUBase
                                 }
 
                                 if ($showConfirmResponse) {
-                                    die($this->_qcpConfirmResponse($confirmResponseMessage));
+                                    die($this->_wcpConfirmResponse($confirmResponseMessage));
                                 }
                             } else {
                                 // paymentState unknown - not paid yet. handle as failure.
-                                $this->_qcpConfirmLogging('Invalid payment state. Set failure state for order');
+                                $this->_wcpConfirmLogging('Invalid payment state. Set failure state for order');
                                 $oOrder->cancelOrder();
                                 $oOrder->oxorder__oxtransstatus = new oxField('FAILED');
                                 $failureFolder = $this->getConfig()->getConfigParam('sQcpFailureFolder');
@@ -925,7 +945,7 @@ class qentapayment extends oxUBase
                                 }
 
                                 if ($showConfirmResponse) {
-                                    die($this->_qcpConfirmResponse($confirmResponseMessage));
+                                    die($this->_wcpConfirmResponse($confirmResponseMessage));
                                 }
                             }
                         }
@@ -933,38 +953,38 @@ class qentapayment extends oxUBase
 
                         // order has already been saved. no matter what comes
                         // next we have a valid payment
-                        $this->_qcpConfirmLogging('order has already been paid.');
+                        $this->_wcpConfirmLogging('order has already been paid.');
                         if ($showConfirmResponse) {
-                            die($this->_qcpConfirmResponse());
+                            die($this->_wcpConfirmResponse());
                         }
                     }
                 }
             }
         } else {
             if ($showConfirmResponse) {
-                die($this->_qcpConfirmResponse('Invalid call of confirm action. no payment state given'));
+                die($this->_wcpConfirmResponse('Invalid call of confirm action. no payment state given'));
             }
         }
     }
 
-    protected function _qcpConfirmResponse($message = null)
+    protected function _wcpConfirmResponse($message = null)
     {
         if (!is_null($message)) {
-            $this->_qcpConfirmLogging($message);
+            $this->_wcpConfirmLogging($message);
             $value = 'result="NOK" message="' . $message . '" ';
         } else {
-            $this->_qcpConfirmLogging('Success confirmation will be delivered');
+            $this->_wcpConfirmLogging('Success confirmation will be delivered');
             $value = 'result="OK"';
         }
 
-        return '<QCP-CONFIRMATION-RESPONSE ' . $value . ' />';
+        return '<WCP-CONFIRMATION-RESPONSE ' . $value . ' />';
     }
 
     protected function _setOrderFolder($oOrder, $folder)
     {
         if ($folder) {
             $oOrder->oxorder__oxfolder = new oxField($folder, oxField::T_RAW);
-            $this->_qcpConfirmLogging('moved order to ' . $folder . ' folder');
+            $this->_wcpConfirmLogging('moved order to ' . $folder . ' folder');
         }
 
         return $oOrder;
@@ -979,7 +999,7 @@ class qentapayment extends oxUBase
     protected function _isPaid($oOrder)
     {
         if ($oOrder->oxorder__oxtransstatus->value == 'PAID') {
-            $this->_qcpConfirmLogging('Order has already been paid.');
+            $this->_wcpConfirmLogging('Order has already been paid.');
 
             return true;
         }

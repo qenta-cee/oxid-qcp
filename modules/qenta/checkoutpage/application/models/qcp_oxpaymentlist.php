@@ -1,11 +1,34 @@
 <?php
 /**
- * Shop System Plugins
- * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins:info
- * - License can be found under:
- * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ * Shop System Plugins - Terms of Use
+ *
+ * The plugins offered are provided free of charge by Wirecard Central Eastern Europe GmbH
+ * (abbreviated to Wirecard CEE) and are explicitly not part of the Wirecard CEE range of
+ * products and services.
+ *
+ * They have been tested and approved for full functionality in the standard configuration
+ * (status on delivery) of the corresponding shop system. They are under General Public
+ * License Version 2 (GPLv2) and can be used, developed and passed on to third parties under
+ * the same terms.
+ *
+ * However, Wirecard CEE does not provide any guarantee or accept any liability for any errors
+ * occurring when used in an enhanced, customized shop system configuration.
+ *
+ * Operation in an enhanced, customized configuration is at your own risk and requires a
+ * comprehensive test phase by the user of the plugin.
+ *
+ * Customers use the plugins at their own risk. Wirecard CEE does not guarantee their full
+ * functionality neither does Wirecard CEE assume liability for any disadvantages related to
+ * the use of the plugins. Additionally, Wirecard CEE does not guarantee the full functionality
+ * for customized shop systems or installed plugins of other vendors of plugins within the same
+ * shop system.
+ *
+ * Customers are responsible for testing the plugin's functionality before starting productive
+ * operation.
+ *
+ * By installing the plugin into the shop system the customer agrees to these terms of use.
+ * Please do not use the plugin if you do not agree to these terms of use!
+ */
 
 class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
 {
@@ -14,40 +37,40 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
     {
         $paymentList = parent::getPaymentList($sShipSetId, $dPrice, $oUser);
 
-        if (array_key_exists('qcp_invoice_b2b', $paymentList) || array_key_exists('qcp_invoice_b2c',
-                $paymentList) || array_key_exists('qcp_installment', $paymentList)
+        if (array_key_exists('wcp_invoice_b2b', $paymentList) || array_key_exists('wcp_invoice_b2c',
+                $paymentList) || array_key_exists('wcp_installment', $paymentList)
         ) {
             $dob = $oUser->oxuser__oxbirthdate->value;
 
             $oBasket = $this->getSession()->getBasket();
             $oOrder = oxNew('oxorder');
 
-            if (array_key_exists('qcp_invoice_b2c', $paymentList)) {
-                if (!$this->_isQCPInvoiceAvailable($oUser, $oBasket,
+            if (array_key_exists('wcp_invoice_b2c', $paymentList)) {
+                if (!$this->_isWCPInvoiceAvailable($oUser, $oBasket,
                         $oOrder) || !empty($oUser->oxuser__oxcompany->value)
                 ) {
-                    unset($paymentList['qcp_invoice_b2c']);
+                    unset($paymentList['wcp_invoice_b2c']);
                 } elseif ($dob && $dob == '0000-00-00') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
 
-                    $dobData = oxRegistry::getSession()->getVariable('qcp_dobData');
+                    $dobData = oxRegistry::getSession()->getVariable('wcp_dobData');
                     if (!empty($dobData)) {
-                        $oSmarty->assign("dobData", oxRegistry::getSession()->getVariable('qcp_dobData'));
+                        $oSmarty->assign("dobData", oxRegistry::getSession()->getVariable('wcp_dobData'));
                     }
                 }
             }
 
-            if (array_key_exists('qcp_invoice_b2b', $paymentList)) {
+            if (array_key_exists('wcp_invoice_b2b', $paymentList)) {
                 $vatId = $oUser->oxuser__oxustid->value;
 
-                if (!$this->_isQCPInvoiceAvailable($oUser, $oBasket,
+                if (!$this->_isWCPInvoiceAvailable($oUser, $oBasket,
                         $oOrder) || empty($oUser->oxuser__oxcompany->value)
                 ) {
-                    unset($paymentList['qcp_invoice_b2b']);
+                    unset($paymentList['wcp_invoice_b2b']);
                 }
                 if (oxRegistry::getConfig()->getConfigParam('sQcpInvoiceProvider') == 'PAYOLUTION') {
-                    $sVatId = oxRegistry::getSession()->getVariable('qcp_vatId');
+                    $sVatId = oxRegistry::getSession()->getVariable('wcp_vatId');
                     if (empty($vatId)) {
                         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                         $oSmarty->assign("sVatId", $sVatId);
@@ -56,23 +79,23 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
                 }
             }
 
-            if (array_key_exists('qcp_installment', $paymentList)) {
-                if (!$this->_isQCPInstallmentAvailable($oUser, $oBasket, $oOrder)) {
-                    unset($paymentList['qcp_installment']);
+            if (array_key_exists('wcp_installment', $paymentList)) {
+                if (!$this->_isWCPInstallmentAvailable($oUser, $oBasket, $oOrder)) {
+                    unset($paymentList['wcp_installment']);
                 } elseif ($dob && $dob == '0000-00-00') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
 
-                    $dobData = oxRegistry::getSession()->getVariable('qcp_dobData');
+                    $dobData = oxRegistry::getSession()->getVariable('wcp_dobData');
                     if (!empty($dobData)) {
-                        $oSmarty->assign("dobData", oxRegistry::getSession()->getVariable('qcp_dobData'));
+                        $oSmarty->assign("dobData", oxRegistry::getSession()->getVariable('wcp_dobData'));
                     }
                 }
             }
         }
-        if (array_key_exists('qcp_ccard-moto', $paymentList)) {
+        if (array_key_exists('wcp_ccard-moto', $paymentList)) {
             if (!$this->getUser()->inGroup('oxidadmin')) {
-                unset($paymentList['qcp_ccard-moto']);
+                unset($paymentList['wcp_ccard-moto']);
             }
         }
 
@@ -86,7 +109,7 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
      * @param oxUser $oUser
      * @return boolean
      */
-    protected function _isQCPInvoiceAvailable($oUser, $oBasket, $oOrder)
+    protected function _isWCPInvoiceAvailable($oUser, $oBasket, $oOrder)
     {
         if (!($oUser || $oBasket || $oOrder)) {
             return false;
@@ -94,15 +117,15 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
 
         $oPayment = oxNew("qcp_payment");
 
-        if (!$oPayment->qcpValidateCustomerAge($oUser)) {
+        if (!$oPayment->wcpValidateCustomerAge($oUser)) {
             return false;
         }
-        if (!(oxRegistry::getConfig()->getConfigParam('bQcpPayolutionAllowDifferingAddresses') && oxRegistry::getConfig()->getConfigParam('sInvoiceInstallmentProvider') == 'PAYOLUTION') && !$oPayment->qcpValidateAddresses($oUser,
+        if (!(oxRegistry::getConfig()->getConfigParam('bQcpPayolutionAllowDifferingAddresses') && oxRegistry::getConfig()->getConfigParam('sInvoiceInstallmentProvider') == 'PAYOLUTION') && !$oPayment->wcpValidateAddresses($oUser,
                 $oOrder)
         ) {
             return false;
         }
-        if (!$oPayment->qcpValidateCurrency($oBasket)) {
+        if (!$oPayment->wcpValidateCurrency($oBasket)) {
             return false;
         }
 
@@ -114,7 +137,7 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
      * @param oxUser $oUser
      * @return boolean
      */
-    protected function _isQCPInstallmentAvailable($oUser, $oBasket, $oOrder)
+    protected function _isWCPInstallmentAvailable($oUser, $oBasket, $oOrder)
     {
         if (!($oUser || $oBasket || $oOrder)) {
             return false;
@@ -122,15 +145,15 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
 
         $oPayment = oxNew("qcp_payment");
 
-        if (!$oPayment->qcpValidateCustomerAge($oUser)) {
+        if (!$oPayment->wcpValidateCustomerAge($oUser)) {
             return false;
         }
-        if (!(oxRegistry::getConfig()->getConfigParam('bQcpPayolutionAllowDifferingAddresses') && oxRegistry::getConfig()->getConfigParam('sInvoiceInstallmentProvider') == 'PAYOLUTION') && !$oPayment->qcpValidateAddresses($oUser,
+        if (!(oxRegistry::getConfig()->getConfigParam('bQcpPayolutionAllowDifferingAddresses') && oxRegistry::getConfig()->getConfigParam('sInvoiceInstallmentProvider') == 'PAYOLUTION') && !$oPayment->wcpValidateAddresses($oUser,
                 $oOrder)
         ) {
             return false;
         }
-        if (!$oPayment->qcpValidateCurrency($oBasket)) {
+        if (!$oPayment->wcpValidateCurrency($oBasket)) {
             return false;
         }
 
