@@ -15,15 +15,15 @@
 [{/if}]
 
 [{if !isset($wcsPaymentCount)}]
-    [{$oView->getWcpRatePayConsumerDeviceId()}]
-    [{ assign var="wcpPaymentCount" value="1"}]
+    [{$oView->getQcpRatePayConsumerDeviceId()}]
+    [{ assign var="qcpPaymentCount" value="1"}]
 [{/if}]
 
-[{if $oView->isWcpPaymethod($sPaymentID)}]
+[{if $oView->isQcpPaymethod($sPaymentID)}]
     <dl>
         <dt>
             <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
-            <label for="payment_[{$sPaymentID}]">[{$oView->getWcpPaymentLogo($sPaymentID)}]<b>[{ $oView->getWcpRawPaymentDesc($paymentmethod->oxpayments__oxdesc->value)}]</b>
+            <label for="payment_[{$sPaymentID}]">[{$oView->getQcpPaymentLogo($sPaymentID)}]<b>[{ $oView->getQcpRawPaymentDesc($paymentmethod->oxpayments__oxdesc->value)}]</b>
                 [{if $paymentmethod->getPrice()}]
                     [{assign var="oPaymentPrice" value=$paymentmethod->getPrice() }]
                     [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
@@ -45,7 +45,7 @@
             <ul>
                 [{foreach from=$aDynValues item=value name=PaymentDynValues}]
                 <li>
-                    <label>[{$oView->getWcpPaymentLogo($paymentmethod)}] [{ $value->name}]</label>
+                    <label>[{$oView->getQcpPaymentLogo($paymentmethod)}] [{ $value->name}]</label>
                     <input id="[{$sPaymentID}]_[{$smarty.foreach.PaymentDynValues.iteration}]" type="text" class="textbox" size="20" maxlength="64" name="dynvalue[[{$value->name}]]" value="[{ $value->value}]">
                 </li>
                 [{/foreach}]
@@ -60,7 +60,7 @@
             [{/if}]
             [{/block}]
 
-            [{if $bShowDobField && $oView->hasWcpDobField($sPaymentID)}]
+            [{if $bShowDobField && $oView->hasQcpDobField($sPaymentID)}]
                 <div class="desc" id="[{$sPaymentID}]_desc">
 
                 <ul class="form clear">
@@ -93,7 +93,7 @@
             </div>
             [{/if}]
 
-            [{if $sPaymentID=='wcp_eps'}]
+            [{if $sPaymentID=='qcp_eps'}]
             <div class="desc" id="[{$sPaymentID}]_desc">
                 <ul class="form clear">
                     <select name="[{$sPaymentID}]_financialInstitution">
@@ -134,7 +134,7 @@
             </div>
             [{/if}]
 
-            [{if $sPaymentID=='wcp_idl'}]
+            [{if $sPaymentID=='qcp_idl'}]
             <div class="desc" id="[{$sPaymentID}]_desc">
                 <ul class="form clear">
                     <select name="[{$sPaymentID}]_financialInstitution">
@@ -154,7 +154,7 @@
             [{/if}]
 
 
-            [{if $oView->hasWcpVatIdField($sPaymentID) && $bShowVatIdField}]
+            [{if $oView->hasQcpVatIdField($sPaymentID) && $bShowVatIdField}]
             <div class="desc">
                 <ul class="form clear">
                     <li [{if $aErrors.oxuser__oxustid}]class="oxInValid"[{/if}]>
@@ -169,8 +169,8 @@
             [{/if}]
 
 
-            [{if $oView->showWcpTrustedShopsCheckbox($sPaymentID)}]
-                <input id="payolutionTerms" class='js-oxValidate js-oxValidate_notEmpty' name='payolutionTerms' type="checkbox" value="1" />[{ $oView->getWcpPayolutionTerms() }]
+            [{if $oView->showQcpTrustedShopsCheckbox($sPaymentID)}]
+                <input id="payolutionTerms" class='js-oxValidate js-oxValidate_notEmpty' name='payolutionTerms' type="checkbox" value="1" />[{ $oView->getQcpPayolutionTerms() }]
             [{/if}]
 
         </dd>

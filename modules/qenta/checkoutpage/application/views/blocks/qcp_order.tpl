@@ -1,6 +1,6 @@
 [{assign var="payment" value=$oView->getPayment()}]
 
-[{if $oView->isWcpPaymethod($payment->oxpayments__oxid->value)}]
+[{if $oView->isQcpPaymethod($payment->oxpayments__oxid->value)}]
     <div id="orderShipping">
         <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
             <h3 class="section">
@@ -25,7 +25,7 @@
             </h3>
         </form>
 
-        [{$oView->getWcpRawPaymentDesc($payment->oxpayments__oxdesc->value)}]
+        [{$oView->getQcpRawPaymentDesc($payment->oxpayments__oxdesc->value)}]
     </div>
     [{else}]
     [{$smarty.block.parent}]

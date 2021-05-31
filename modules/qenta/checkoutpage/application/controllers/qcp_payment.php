@@ -8,7 +8,7 @@
 */
 
 /**
- * Payment class wrapper for WCP module
+ * Payment class wrapper for QCP module
  *
  * @see oxPayment
  */
@@ -22,24 +22,24 @@ class qcp_payment extends qcp_payment_parent
         return $sReturn;
     }
 
-    public static function isWcpPaymethod($paymethod)
+    public static function isQcpPaymethod($paymethod)
     {
-        return wdceepayment::isValidWCPPayment($paymethod);
+        return wdceepayment::isValidQCPPayment($paymethod);
     }
 
     /**
      * @return string
      */
-    function getWcpRatePayConsumerDeviceId()
+    function getQcpRatePayConsumerDeviceId()
     {
         $config = oxRegistry::getConfig();
 
-        if(isset($_SESSION['wcp-consumerDeviceId'])) {
-            $consumerDeviceId = $_SESSION['wcp-consumerDeviceId'];
+        if(isset($_SESSION['qcp-consumerDeviceId'])) {
+            $consumerDeviceId = $_SESSION['qcp-consumerDeviceId'];
         } else {
             $timestamp = microtime();
             $consumerDeviceId = md5($config->getConfigParam('sQcpCustomerId') . "_" . $timestamp);
-            $_SESSION['wcp-consumerDeviceId'] = $consumerDeviceId;
+            $_SESSION['qcp-consumerDeviceId'] = $consumerDeviceId;
         }
 
         if($config->getConfigParam('sQcpInvoiceProvider') == "RATEPAY" || $config->getConfigParam('sQcpInstallmentProvider') == "RATEPAY") {
@@ -52,64 +52,64 @@ class qcp_payment extends qcp_payment_parent
         }
     }
 
-    public function getWcpPaymentLogo($paymethod)
+    public function getQcpPaymentLogo($paymethod)
     {
 
         $conf = oxRegistry::getConfig();
         $modulePaths = $conf->getConfigParam('aModulePaths');
         $imgPath = $conf->getConfigParam('sShopURL') . '/modules/' . $modulePaths['qentacheckoutpage'] . '/out/img/';
         switch ($paymethod) {
-            case 'wcp_bancontact_mistercash':
+            case 'qcp_bancontact_mistercash':
                 return '<img src="' . $imgPath . 'bancontact_mistercash.png" />';
-            case 'wcp_ccard':
+            case 'qcp_ccard':
                 return '<img src="' . $imgPath . 'ccard.png" />';
-            case 'wcp_ccard-moto':
+            case 'qcp_ccard-moto':
                 return '<img src="' . $imgPath . 'ccard.png" />';
-            case 'wcp_ekonto':
+            case 'qcp_ekonto':
                 return '<img src="' . $imgPath . 'ekonto.png" />';
-            case 'wcp_epay_bg':
+            case 'qcp_epay_bg':
                 return '<img src="' . $imgPath . 'epay_bg.png" />';
-            case 'wcp_eps':
+            case 'qcp_eps':
                 return '<img src="' . $imgPath . 'eps.png" />';
-            case 'wcp_giropay':
+            case 'qcp_giropay':
                 return '<img src="' . $imgPath . 'giropay.jpg" />';
-            case 'wcp_idl':
+            case 'qcp_idl':
                 return '<img src="' . $imgPath . 'idl.png" />';
-            case 'wcp_installment':
+            case 'qcp_installment':
                 return '<img src="' . $imgPath . 'installment.jpg" />';
-            case 'wcp_invoice_b2b':
+            case 'qcp_invoice_b2b':
                 return '<img src="' . $imgPath . 'invoice.png" />';
-            case 'wcp_invoice_b2c':
+            case 'qcp_invoice_b2c':
                 return '<img src="' . $imgPath . 'invoice.png" />';
-            case 'wcp_maestro':
+            case 'qcp_maestro':
                 return '<img src="' . $imgPath . 'maestro.png" />';
-            case 'wcp_moneta':
+            case 'qcp_moneta':
                 return '<img src="' . $imgPath . 'moneta.jpg" />';
-            case 'wcp_masterpass':
+            case 'qcp_masterpass':
                 return '<img src="' . $imgPath . 'masterpass.png" />';
-            case 'wcp_paypal':
+            case 'qcp_paypal':
                 return '<img src="' . $imgPath . 'paypal.png" />';
-            case 'wcp_pbx':
+            case 'qcp_pbx':
                 return '<img src="' . $imgPath . 'pbx.jpg" />';
-            case 'wcp_poli':
+            case 'qcp_poli':
                 return '<img src="' . $imgPath . 'poli.png" />';
-            case 'wcp_przelewy24':
+            case 'qcp_przelewy24':
                 return '<img src="' . $imgPath . 'przelewy24.jpg" />';
-            case 'wcp_psc':
+            case 'qcp_psc':
                 return '<img src="' . $imgPath . 'psc.png" />';
-            case 'wcp_sepa-dd':
+            case 'qcp_sepa-dd':
                 return '<img src="' . $imgPath . 'sepa.png" />';
-            case 'wcp_skrillwallet':
+            case 'qcp_skrillwallet':
                 return '<img src="' . $imgPath . 'skrillwallet.jpg" />';
-            case 'wcp_sofortueberweisung':
+            case 'qcp_sofortueberweisung':
                 return '<img src="' . $imgPath . 'sofort.png" />';
-            case 'wcp_tatrapay':
+            case 'qcp_tatrapay':
                 return '<img src="' . $imgPath . 'tatrapay.jpg" />';
-            case 'wcp_trustly':
+            case 'qcp_trustly':
                 return '<img src="' . $imgPath . 'trustly.jpg" />';
-            case 'wcp_voucher':
+            case 'qcp_voucher':
                 return '<img src="' . $imgPath . 'voucher.png" />';
-            case 'wcp_trustpay':
+            case 'qcp_trustpay':
                 return '<img src="' . $imgPath . 'trustpay.jpg" />';
             default:
                 return null;
@@ -117,20 +117,20 @@ class qcp_payment extends qcp_payment_parent
     }
 
 
-    public function hasWcpDobField($sPaymentId)
+    public function hasQcpDobField($sPaymentId)
     {
-        if (in_array($sPaymentId, array('wcp_invoice_b2c', 'wcp_installment'))) {
+        if (in_array($sPaymentId, array('qcp_invoice_b2c', 'qcp_installment'))) {
             return true;
         }
 
         return false;
     }
 
-    public function hasWcpVatIdField($sPaymentId)
+    public function hasQcpVatIdField($sPaymentId)
     {
 
         if (oxRegistry::getConfig()->getConfigParam('sQcpInvoiceProvider') == 'PAYOLUTION') {
-            if ($sPaymentId == 'wcp_invoice_b2b') {
+            if ($sPaymentId == 'qcp_invoice_b2b') {
                 return true;
             }
         }
@@ -147,26 +147,26 @@ class qcp_payment extends qcp_payment_parent
         $sPaymentId = (string )$oConfig->getRequestParameter('paymentid');
         $oLang = oxRegistry::get('oxLang');
 
-        if (in_array($sPaymentId, array('wcp_idl', 'wcp_eps'))) {
+        if (in_array($sPaymentId, array('qcp_idl', 'qcp_eps'))) {
             $oSession->setVariable('financialInstitution', oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_financialInstitution'));
         }
 
-        if (in_array($sPaymentId,array('wcp_invoice_b2c','wcp_installment'))) {
-            if ($this->hasWcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
+        if (in_array($sPaymentId,array('qcp_invoice_b2c','qcp_installment'))) {
+            if ($this->hasQcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
                 $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
                 $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
                 $iBirthdayMonth = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayMonth');
 
                 if (empty($iBirthdayYear) || empty($iBirthdayDay) || empty($iBirthdayMonth)) {
-                    $oSession->setVariable('wcp_payerrortext',
-                        $oLang->translateString('WIRECARD_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
+                    $oSession->setVariable('qcp_payerrortext',
+                        $oLang->translateString('QENTA_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
                             $oLang->getBaseLanguage()));
 
                     return;
                 }
 
                 $dateData = array('day' => $iBirthdayDay, 'month' => $iBirthdayMonth, 'year' => $iBirthdayYear);
-                $oSession->setVariable('wcp_dobData', $dateData);
+                $oSession->setVariable('qcp_dobData', $dateData);
 
                 if (is_array($dateData)) {
                     $oUser->oxuser__oxbirthdate = new oxField($oUser->convertBirthday($dateData), oxField::T_RAW);
@@ -175,18 +175,18 @@ class qcp_payment extends qcp_payment_parent
             }
 
             //validate paymethod
-            if (!$this->wcpValidateCustomerAge($oUser, 18)) {
-                $oSession->setVariable('wcp_payerrortext',
-                    sprintf($oLang->translateString('WIRECARD_CHECKOUT_PAGE_DOB_TOO_YOUNG',
+            if (!$this->qcpValidateCustomerAge($oUser, 18)) {
+                $oSession->setVariable('qcp_payerrortext',
+                    sprintf($oLang->translateString('QENTA_CHECKOUT_PAGE_DOB_TOO_YOUNG',
                         $oLang->getBaseLanguage()), 18));
 
                 return;
             }
         }
-        if ('wcp_invoice_b2b' == $sPaymentId) {
+        if ('qcp_invoice_b2b' == $sPaymentId) {
             if ($oConfig->getConfigParam('sQcpInvoiceProvider') == 'PAYOLUTION') {
                 $vatId = $oUser->oxuser__oxustid->value;
-                if ($this->hasWcpVatIdField($sPaymentId) && empty($vatId)) {
+                if ($this->hasQcpVatIdField($sPaymentId) && empty($vatId)) {
                     $sVatId = oxRegistry::getConfig()->getRequestParameter('sVatId');
 
                     if (!empty($sVatId)) {
@@ -200,7 +200,7 @@ class qcp_payment extends qcp_payment_parent
                         $oInputValidator->checkVatId($oUser, $aInput);
 
                         if ($oError = oxRegistry::get("oxInputValidator")->getFirstValidationError()) {
-                            $oSession->setVariable('wcp_payerrortext', $oError->getMessage());
+                            $oSession->setVariable('qcp_payerrortext', $oError->getMessage());
 
                             return;
                         }
@@ -213,10 +213,10 @@ class qcp_payment extends qcp_payment_parent
 
         }
 
-        if ($this->showWcpTrustedShopsCheckbox($sPaymentId)) {
+        if ($this->showQcpTrustedShopsCheckbox($sPaymentId)) {
             if (!oxRegistry::getConfig()->getRequestParameter('payolutionTerms')) {
-                $oSession->setVariable('wcp_payerrortext',
-                    $oLang->translateString('WIRECARD_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS',
+                $oSession->setVariable('qcp_payerrortext',
+                    $oLang->translateString('QENTA_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS',
                         $oLang->getBaseLanguage()));
 
                 $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
@@ -234,13 +234,13 @@ class qcp_payment extends qcp_payment_parent
     /**
      * @return mixed
      */
-    public function getWcpPaymentError()
+    public function getQcpPaymentError()
     {
         $qcp_payment_error = '';
 
-        if (oxRegistry::getSession()->hasVariable('wcp_payerrortext')) {
-            $qcp_payment_error = oxRegistry::getSession()->getVariable('wcp_payerrortext');
-            oxRegistry::getSession()->deleteVariable('wcp_payerrortext');
+        if (oxRegistry::getSession()->hasVariable('qcp_payerrortext')) {
+            $qcp_payment_error = oxRegistry::getSession()->getVariable('qcp_payerrortext');
+            oxRegistry::getSession()->deleteVariable('qcp_payerrortext');
         }
 
         return $qcp_payment_error;
@@ -249,9 +249,9 @@ class qcp_payment extends qcp_payment_parent
     /**
      * @return bool
      */
-    public function isWcpPaymentError()
+    public function isQcpPaymentError()
     {
-        if (oxRegistry::getSession()->hasVariable('wcp_payerrortext')) {
+        if (oxRegistry::getSession()->hasVariable('qcp_payerrortext')) {
             return true;
         }
 
@@ -265,7 +265,7 @@ class qcp_payment extends qcp_payment_parent
      * @param integer $iMinAge
      * @return boolean
      */
-    public function wcpValidateCustomerAge($oUser, $iMinAge = 18)
+    public function qcpValidateCustomerAge($oUser, $iMinAge = 18)
     {
         $dob = $oUser->oxuser__oxbirthdate->value;
         if ($dob && $dob != '0000-00-00') {
@@ -285,7 +285,7 @@ class qcp_payment extends qcp_payment_parent
         return true;
     }
 
-    public function wcpValidateAddresses($oUser, $oOrder)
+    public function qcpValidateAddresses($oUser, $oOrder)
     {
         //if delivery Address is not set it's the same as billing
         $oDelAddress = $oOrder->getDelAddressInfo();
@@ -317,7 +317,7 @@ class qcp_payment extends qcp_payment_parent
      * @param Array $aAllowedCurrencies
      * @return boolean
      */
-    public function wcpValidateCurrency($oBasket, $aAllowedCurrencies = Array('EUR'))
+    public function qcpValidateCurrency($oBasket, $aAllowedCurrencies = Array('EUR'))
     {
         $currency = $oBasket->getBasketCurrency();
         if (!in_array($currency->name, $aAllowedCurrencies)) {
@@ -327,40 +327,40 @@ class qcp_payment extends qcp_payment_parent
         return true;
     }
 
-    function showWcpTrustedShopsCheckbox($sPaymentId)
+    function showQcpTrustedShopsCheckbox($sPaymentId)
     {
         $installmentPayolution = oxRegistry::getConfig()->getConfigParam('sQcpInstallmentProvider') == 'PAYOLUTION';
         $invoicePayolution = oxRegistry::getConfig()->getConfigParam('sQcpInvoiceProvider') == 'PAYOLUTION';
         switch ($sPaymentId) {
-            case 'wcp_installment':
+            case 'qcp_installment':
                 return $installmentPayolution ? oxRegistry::getConfig()->getConfigParam('bQcpInstallmentTrustedShopsCheckbox') : false;
-            case 'wcp_invoice_b2b':
+            case 'qcp_invoice_b2b':
                 return $invoicePayolution ? oxRegistry::getConfig()->getConfigParam('bQcpInvoiceb2bTrustedShopsCheckbox') : false;
-            case 'wcp_invoice_b2c':
+            case 'qcp_invoice_b2c':
                 return $invoicePayolution ? oxRegistry::getConfig()->getConfigParam('bQcpInvoiceb2cTrustedShopsCheckbox') : false;
             default:
                 return false;
         }
     }
 
-    function getWcpPayolutionTerms()
+    function getQcpPayolutionTerms()
     {
         $oLang = oxRegistry::get('oxLang');
         $conf = oxRegistry::getConfig();
 
-        return sprintf($oLang->translateString('WIRECARD_CHECKOUT_PAGE_PAYOLUTION_TERMS', $oLang->getBaseLanguage()),
+        return sprintf($oLang->translateString('QENTA_CHECKOUT_PAGE_PAYOLUTION_TERMS', $oLang->getBaseLanguage()),
             'https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $conf->getConfigParam('sQcpPayolutionMId'));
 
     }
 
     /**
-     * strips "WCP " prefix from paymethod description
+     * strips "QCP " prefix from paymethod description
      *
      * @param String paymethod description with prefix
      * @return String paymethod description without prefix
      **/
-    public static function getWcpRawPaymentDesc($paymethodNameWithPrefix)
+    public static function getQcpRawPaymentDesc($paymethodNameWithPrefix)
     {
-        return str_replace('WCP ', '', $paymethodNameWithPrefix);
+        return str_replace('QCP ', '', $paymethodNameWithPrefix);
     }
 }

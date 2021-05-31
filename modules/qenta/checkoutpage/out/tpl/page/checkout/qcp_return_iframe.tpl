@@ -7,11 +7,11 @@
 		<script language="javascript" type="text/javascript">
 			function iFrameBreakout()
 			{
-				parent.document.location.href = "[{$wcpReturnUrl}]";
+				parent.document.location.href = "[{$qcpReturnUrl}]";
 			}
 		</script>
 	</head>
 	<body onLoad="iFrameBreakout()">
-        <center><h3>[{ oxmultilang ident="wcp_return_redirect" }]</h3></center>
+        <center><h3>[{ oxmultilang ident="qcp_return_redirect" }]</h3></center>
 	</body>
 </html>

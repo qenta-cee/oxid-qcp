@@ -16,7 +16,7 @@ class qcp_order extends qcp_order_parent
     }
 
     /**
-     * Hookpoint. check if it's an wcp Order.
+     * Hookpoint. check if it's an qcp Order.
      * @param $iSuccess - the order success state.
      * @return String - checkoutUrl or parent return.
      * @see order
@@ -25,10 +25,10 @@ class qcp_order extends qcp_order_parent
     {
         $oPayment = $this->getPayment();
 
-        if ($oPayment && wdceepayment::isValidWCPPayment($oPayment->oxpayments__oxid->value)) {
+        if ($oPayment && wdceepayment::isValidQCPPayment($oPayment->oxpayments__oxid->value)) {
             if (is_numeric($iSuccess) && ($iSuccess == oxOrder::ORDER_STATE_ORDEREXISTS || $iSuccess == oxOrder::ORDER_STATE_OK)) {
                 $oSession = $this->getSession();
-                $oSession->setVariable('wcpBasket', serialize($oSession->getBasket()));
+                $oSession->setVariable('qcpBasket', serialize($oSession->getBasket()));
                 $oSession->delBasket();
                 $oPayment = $this->getPayment();
                 $oOrder = $this->_getOrder();
@@ -36,12 +36,12 @@ class qcp_order extends qcp_order_parent
                 /** @var qcp_OrderDbGateway $oDbOrder */
                 $oDbOrder = oxNew('qcp_OrderDbGateway');
                 $aOrderData = Array(
-                    'BASKET' => $oSession->getVariable('wcpBasket'),
+                    'BASKET' => $oSession->getVariable('qcpBasket'),
                     'OXORDERID' => $oOrder->getId()
                 );
                 $oDbOrder->insert($aOrderData);
 
-                $checkoutType = wdceepayment::getCheckoutType(str_replace('wcp_', '',
+                $checkoutType = wdceepayment::getCheckoutType(str_replace('qcp_', '',
                     $oPayment->oxpayments__oxid->value));
 
                 if ($checkoutType == 'IFRAME') {
@@ -70,13 +70,13 @@ class qcp_order extends qcp_order_parent
     }
 
 
-    public function isWcpPaymethod($sPaymentID)
+    public function isQcpPaymethod($sPaymentID)
     {
-        return qcp_payment::isWcpPaymethod($sPaymentID);
+        return qcp_payment::isQcpPaymethod($sPaymentID);
     }
 
-    public function getWcpRawPaymentDesc($paymethodNameWithPrefix)
+    public function getQcpRawPaymentDesc($paymethodNameWithPrefix)
     {
-        return qcp_payment::getWcpRawPaymentDesc($paymethodNameWithPrefix);
+        return qcp_payment::getQcpRawPaymentDesc($paymethodNameWithPrefix);
     }
 }

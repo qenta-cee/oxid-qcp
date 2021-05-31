@@ -37,8 +37,8 @@ $aModule = array(
         'oxuserpayment' => 'qenta/checkoutpage/application/models/qcp_oxuserpayment',
     ),
     'files' => array(
-        'out/lang/de/wcp_lang.php' => 'qenta/checkoutpage/out/lang/de/wcp_lang.php',
-        'out/lang/en/wcp_lang.php' => 'qenta/checkoutpage/out/lang/en/wcp_lang.php',
+        'out/lang/de/qcp_lang.php' => 'qenta/checkoutpage/out/lang/de/qcp_lang.php',
+        'out/lang/en/qcp_lang.php' => 'qenta/checkoutpage/out/lang/en/qcp_lang.php',
         'wdceepayment' => 'qenta/checkoutpage/application/controllers/wdceepayment.php',
         'qcp_submit_config' => 'qenta/checkoutpage/application/controllers/admin/qcp_submit_config.php',
         'qcp_OrderDbGateway' => 'qenta/checkoutpage/application/models/dbgateways/qcp_orderdbgateway.php',
@@ -88,7 +88,7 @@ $aModule = array(
         'page/checkout/qcp_checkout_iframe.tpl' => 'qenta/checkoutpage/out/tpl/page/checkout/qcp_checkout_iframe.tpl',
         'page/checkout/qcp_checkout_page.tpl' => 'qenta/checkoutpage/out/tpl/page/checkout/qcp_checkout_page.tpl',
         'page/checkout/qcp_return_iframe.tpl' => 'qenta/checkoutpage/out/tpl/page/checkout/qcp_return_iframe.tpl',
-        'email/html/wcpDoublePaymentForOrder.tpl' => 'qenta/checkoutpage/out/tpl/email/html/qcpDoublePaymentForOrder.tpl',
+        'email/html/qcpDoublePaymentForOrder.tpl' => 'qenta/checkoutpage/out/tpl/email/html/qcpDoublePaymentForOrder.tpl',
         'qcp_submit_config.tpl' => 'qenta/checkoutpage/application/views/admin/tpl/qcp_submit_config.tpl',
     ),
     'settings' => array(
@@ -143,31 +143,31 @@ $aModule = array(
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bWcpAutoDeposit',
+            'name' => 'bQcpAutoDeposit',
             'type' => 'bool',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'sWcpBackgroundColor',
+            'name' => 'sQcpBackgroundColor',
             'type' => 'str',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bWcpAutoDeposit',
+            'name' => 'bQcpAutoDeposit',
             'type' => 'bool',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bWcpDuplicateRequestCheck',
+            'name' => 'bQcpDuplicateRequestCheck',
             'type' => 'bool',
             'value' => ''
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'sWcpConfirmMail',
+            'name' => 'sQcpConfirmMail',
             'type' => 'str',
             'value' => ''
         ),

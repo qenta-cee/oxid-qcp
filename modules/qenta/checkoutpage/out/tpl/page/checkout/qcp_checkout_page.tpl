@@ -10,7 +10,7 @@
     <body onLoad="document.form.submit();">
         <center><h3>[{ oxmultilang ident="qcp_payment_page_redirect" }]</h3></center>
         <form method="post" name="form" action="[{$qcpPaymentUrl}]">
-        [{foreach from=$wcpRequest key=name  item=value}]
+        [{foreach from=$qcpRequest key=name  item=value}]
             <input type="hidden" name="[{$name}]" value="[{$value}]">
         [{/foreach}]
         </form>

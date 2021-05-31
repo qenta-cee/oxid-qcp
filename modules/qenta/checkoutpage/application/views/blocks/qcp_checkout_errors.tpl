@@ -1,5 +1,5 @@
-[{if $oView->isWcpPaymentError() === TRUE}]
-<div class="status error">[{ $oView->getWcpPaymentError() }]</div>
+[{if $oView->isQcpPaymentError() === TRUE}]
+<div class="status error">[{ $oView->getQcpPaymentError() }]</div>
 [{else}]
 [{$smarty.block.parent}]
 [{/if}]
