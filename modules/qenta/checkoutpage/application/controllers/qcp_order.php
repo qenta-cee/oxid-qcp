@@ -25,7 +25,7 @@ class qcp_order extends qcp_order_parent
     {
         $oPayment = $this->getPayment();
 
-        if ($oPayment && wdceepayment::isValidQCPPayment($oPayment->oxpayments__oxid->value)) {
+        if ($oPayment && qentapayment::isValidQCPPayment($oPayment->oxpayments__oxid->value)) {
             if (is_numeric($iSuccess) && ($iSuccess == oxOrder::ORDER_STATE_ORDEREXISTS || $iSuccess == oxOrder::ORDER_STATE_OK)) {
                 $oSession = $this->getSession();
                 $oSession->setVariable('qcpBasket', serialize($oSession->getBasket()));
@@ -41,13 +41,13 @@ class qcp_order extends qcp_order_parent
                 );
                 $oDbOrder->insert($aOrderData);
 
-                $checkoutType = wdceepayment::getCheckoutType(str_replace('qcp_', '',
+                $checkoutType = qentapayment::getCheckoutType(str_replace('qcp_', '',
                     $oPayment->oxpayments__oxid->value));
 
                 if ($checkoutType == 'IFRAME') {
-                    return 'wdceepayment?fnc=checkoutIFrame';
+                    return 'qentapayment?fnc=checkoutIFrame';
                 } else {
-                    return 'wdceepayment?fnc=checkoutForm';
+                    return 'qentapayment?fnc=checkoutForm';
                 }
             }
         }

@@ -12,7 +12,7 @@
  * if order-view would have been used there would be some problems with
  * low-stock items
  */
-class wdceepayment extends oxUBase
+class qentapayment extends oxUBase
 {
     protected $_oOrder = null;
 
@@ -127,7 +127,7 @@ class wdceepayment extends oxUBase
         $oConfig = $this->getConfig();
         $this->addGlobalParams();
         $this->_aViewData['oxcmp_basket'] = $this->_getBasket();
-        $this->_aViewData['qcpIFrameUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=wdceepayment&fnc=checkoutForm';
+        $this->_aViewData['qcpIFrameUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=qentapayment&fnc=checkoutForm';
         $this->_sThisTemplate = 'page/checkout/qcp_checkout_iframe.tpl';
     }
 
@@ -341,7 +341,7 @@ class wdceepayment extends oxUBase
 
         $request['lang'] = oxRegistry::getLang()->getLanguageAbbr();
         $request['langId'] = oxRegistry::getLang()->getBaseLanguage();
-        $request['cl'] = 'wdceepayment';
+        $request['cl'] = 'qentapayment';
         $request['fnc'] = 'returnPage';
         $request['pluginVersion'] = $versionString;
         $request['backgroundColor'] = $oConfig->getConfigParam('sQcpBackgroundColor');
@@ -577,7 +577,7 @@ class wdceepayment extends oxUBase
             $oLang->setBaseLanguage((int)$_POST['langId']);
         }
 
-        $this->_aViewData['qcpReturnUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=wdceepayment&fnc=returnPage';
+        $this->_aViewData['qcpReturnUrl'] = html_entity_decode($oConfig->getShopCurrentUrl()) . 'cl=qentapayment&fnc=returnPage';
         $this->_sThisTemplate = 'page/checkout/qcp_return_iframe.tpl';
     }
 

@@ -28,7 +28,7 @@ class qcp_oxorder extends qcp_oxorder_parent
      */
     protected function _sendOrderByEmail($oUser = null, $oBasket = null, $oPayment = null)
     {
-        if (wdceepayment::isValidQCPPayment($this->oxorder__oxpaymenttype->value)) {
+        if (qentapayment::isValidQCPPayment($this->oxorder__oxpaymenttype->value)) {
             return self::ORDER_STATE_OK;
         }
 

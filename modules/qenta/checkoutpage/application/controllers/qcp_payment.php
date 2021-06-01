@@ -24,7 +24,7 @@ class qcp_payment extends qcp_payment_parent
 
     public static function isQcpPaymethod($paymethod)
     {
-        return wdceepayment::isValidQCPPayment($paymethod);
+        return qentapayment::isValidQCPPayment($paymethod);
     }
 
     /**
