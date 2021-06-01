@@ -993,6 +993,7 @@ class qentapayment extends oxUBase
     {
 
         $sNextStep = oxRegistry::getConfig()->getShopCurrentUrl() . 'cl=payment';
+        print_r($sNextStep);
         if ($lang) {
             $sNextStep .= '&lang=' . (int)$lang;
         }
