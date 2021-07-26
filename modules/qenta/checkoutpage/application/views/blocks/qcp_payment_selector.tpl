@@ -14,7 +14,7 @@
     [{assign var="iBirthdayYear" value=0}]
 [{/if}]
 
-[{if !isset($wcsPaymentCount)}]
+[{if !isset($qcsPaymentCount)}]
     [{$oView->getQcpRatePayConsumerDeviceId()}]
     [{ assign var="qcpPaymentCount" value="1"}]
 [{/if}]

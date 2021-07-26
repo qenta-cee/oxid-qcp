@@ -10,4 +10,4 @@
 /**
  * Metadata version
  */
-$sVendorMetadataVersion = '2.0';
+$sVendorMetadataVersion = '3.0';

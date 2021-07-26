@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Shop System Plugins
  * - Terms of use can be found under
  * https://guides.qenta.com/shop_plugins:info
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ */
 
 /**
  * viewscript to render payment-redirect
@@ -26,11 +27,11 @@ class qentapayment extends oxUBase
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
     protected static $_SECRET_DEMO_MODE = 'B8AKTPWBRMNBV455FG6M2DANE99WU2';
-    protected static $_SECRET_TEST_MODE = 'CHCSH7UGHVVX2P7EHDHSY4T2S4CGYK4QBE4M5YUUG2ND5BEZWNRZW5EJYVJQ';
+    protected static $_SECRET_TEST_MODE = 'DP4TMTPQQWFJW34647RM798E9A5X7E8ATP462Z4VGZK53YEJ3JWXS98B9P4F';
     protected static $_SHOP_ID_DEMO_MODE = '';
-    protected static $_SHOP_ID_TEST_MODE = '';
+    protected static $_SHOP_ID_TEST_MODE = '3D';
 
-    protected static $_VALID_PAYMENT_TYPES = Array(
+    protected static $_VALID_PAYMENT_TYPES = array(
         'CCARD',
         'CCARD-MOTO',
         'MAESTRO',
@@ -201,8 +202,10 @@ class qentapayment extends oxUBase
 
         if (!$result = file_get_contents(self::$_PAYMENT_INIT_URL, false, $context)) {
             $oLang = oxRegistry::get('oxLang');
-            $response["message"] = $oLang->translateString('QENTA_CHECKOUT_PAGE_COMMUNICATION_ERROR',
-                $oLang->getBaseLanguage());
+            $response["message"] = $oLang->translateString(
+                'QENTA_CHECKOUT_PAGE_COMMUNICATION_ERROR',
+                $oLang->getBaseLanguage()
+            );
         } else {
             parse_str($result, $response);
         }
@@ -215,7 +218,8 @@ class qentapayment extends oxUBase
         }
     }
 
-    private function getSecret() {
+    private function getSecret()
+    {
         $oConfig = $this->getConfig();
         switch ($oConfig->getConfigParam('sQcpPluginMode')) {
             case 'Demo':
@@ -228,7 +232,8 @@ class qentapayment extends oxUBase
         }
     }
 
-    private function getCustomerId() {
+    private function getCustomerId()
+    {
         $oConfig = $this->getConfig();
         switch ($oConfig->getConfigParam('sQcpPluginMode')) {
             case 'Demo':
@@ -241,7 +246,8 @@ class qentapayment extends oxUBase
         }
     }
 
-    private function getShopId() {
+    private function getShopId()
+    {
         $oConfig = $this->getConfig();
         switch ($oConfig->getConfigParam('sQcpPluginMode')) {
             case 'Demo':
@@ -296,14 +302,17 @@ class qentapayment extends oxUBase
         } elseif (strlen($orderReference) > $customerStatementLength) {
             $customerStatementString = substr($orderReference, -$customerStatementLength);
         } elseif (strlen($customerStatementString) > $customerStatementLength) {
-            $customerStatementString = substr($oConfig->getConfigParam('sQcpShopName'), 0,
-                    $customerStatementLength - 14) . ' id:' . $orderReference;
+            $customerStatementString = substr(
+                $oConfig->getConfigParam('sQcpShopName'),
+                0,
+                $customerStatementLength - 14
+            ) . ' id:' . $orderReference;
         }
 
-        $request = Array();
+        $request = array();
 
 
-        oxRegistry::getUtils()->writeToLog(__METHOD__. ': init payment with ' . $paymenttype . "\n", self::$_LOG_FILE_NAME);
+        oxRegistry::getUtils()->writeToLog(__METHOD__ . ': init payment with ' . $paymenttype . "\n", self::$_LOG_FILE_NAME);
 
         // QCP RequestParameters
         $request['customerId'] = $this->getCustomerId();
@@ -325,7 +334,7 @@ class qentapayment extends oxUBase
         $request['pendingUrl'] = $returnUrl;
         $request['duplicateRequestCheck'] = ($oConfig->getConfigParam('bQcpDuplicateRequestCheck') == 1) ? 'yes' : 'no';
 
-        $request['orderReference'] = "aa".$orderReference;
+        $request['orderReference'] = "aa" . $orderReference;
         $request['customerStatement'] = $customerStatementString;
 
         $request['displayText'] = $oConfig->getConfigParam('sQcpDisplayText');
@@ -353,16 +362,16 @@ class qentapayment extends oxUBase
             unset($_SESSION['qcp-consumerDeviceId']);
         }
 
-        if($paymenttype === 'MASTERPASS') {
+        if ($paymenttype === 'MASTERPASS') {
             $request['shippingProfile'] = 'NO_SHIPPING';
         }
 
-        if($paymenttype === 'IDL' || $paymenttype === 'EPS') {
+        if ($paymenttype === 'IDL' || $paymenttype === 'EPS') {
             $request['financialInstitution'] = $this->getSession()->getVariable('financialInstitution');
         }
 
         $oUser = $oOrder->getOrderUser();
-        if( $paymenttype === 'INVOICE') {
+        if ($paymenttype === 'INVOICE') {
             if ($oConfig->getConfigParam('sQcpInvoiceProvider') == 'PAYOLUTION') {
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
@@ -387,8 +396,7 @@ class qentapayment extends oxUBase
                     $request['consumerBirthDate'] = $consumerBirthDate;
                 }
             }
-        }
-        elseif( $paymenttype === 'INSTALLMENT') {
+        } elseif ($paymenttype === 'INSTALLMENT') {
             if ($oConfig->getConfigParam('sQcpInstallmentProvider') == 'PAYOLUTION') {
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
@@ -515,7 +523,7 @@ class qentapayment extends oxUBase
 
         $request['sess_challenge'] = oxRegistry::getSession()->getVariable('sess_challenge');
 
-	    $request = array_map('trim', $request);
+        $request = array_map('trim', $request);
 
         $requestFingerprintOrder = 'secret';
         $tempArray = array('secret' => $this->getSecret());
@@ -553,7 +561,8 @@ class qentapayment extends oxUBase
             //fallback if payment status is not updated yet
             $oOrder = $this->_getOrder();
 
-            if ($oOrder->oxorder__oxtransstatus->rawValue !== 'PENDING'
+            if (
+                $oOrder->oxorder__oxtransstatus->rawValue !== 'PENDING'
                 && $oOrder->oxorder__oxtransstatus->rawValue !== 'CANCELED'
                 && $oOrder->oxorder__oxtransstatus->rawValue !== 'PAID'
                 && $oOrder->oxorder__oxtransstatus->rawValue !== 'FAILED'
@@ -614,8 +623,10 @@ class qentapayment extends oxUBase
                 $iLangId = $oLang->getBaseLanguage();
 
                 if ($paymentState == 'CANCEL') {
-                    $oSession->setVariable('qcp_payerrortext',
-                        $oLang->translateString('qcp_payment_canceled', $iLangId));
+                    $oSession->setVariable(
+                        'qcp_payerrortext',
+                        $oLang->translateString('qcp_payment_canceled', $iLangId)
+                    );
                 } elseif ($paymentState == 'FAILURE') {
                     $message = $oLang->translateString('qcp_payment_failure', $iLangId);
                     if ($oSession->getVariable('qcpPaymentConsumerMessage')) {
@@ -778,8 +789,11 @@ class qentapayment extends oxUBase
                         }
                     } else {
                         $oxEmail = oxnew('oxemail');
-                        $oxEmail->sendQCPDoublePaymentMail($oOrder->oxorder__oxordernr->value,
-                            $oOrder->oxorder_oxtransid->rawValue, mysql_real_escape_string($_POST['orderNumber']));
+                        $oxEmail->sendQCPDoublePaymentMail(
+                            $oOrder->oxorder__oxordernr->value,
+                            $oOrder->oxorder_oxtransid->rawValue,
+                            mysql_real_escape_string($_POST['orderNumber'])
+                        );
                         if ($showConfirmResponse) {
                             die($this->_qcpConfirmResponse());
                         }
@@ -853,7 +867,7 @@ class qentapayment extends oxUBase
 
                             $sClass = "qcp_oxbasket";
                             $oBasket = unserialize(preg_replace('/^O:\d+:"[^"]++"/', 'O:' . strlen($sClass) . ':"' . $sClass . '"', $aOrderData['BASKET']));
-                            if($sendEmail) {
+                            if ($sendEmail) {
                                 $oOrder->sendQentaCheckoutPageOrderByEmail($oBasket, $oOxUserPayment);
                                 $this->_qcpConfirmLogging('Email notification was send.');
                             }
@@ -863,8 +877,11 @@ class qentapayment extends oxUBase
                             }
                         } else {
                             $oxEmail = oxnew('oxemail');
-                            $oxEmail->sendQCPDoublePaymentMail($oOrder->oxorder__oxordernr->value,
-                            $oOrder->oxorder_oxtransid->rawValue, mysql_real_escape_string($_POST['orderNumber']));
+                            $oxEmail->sendQCPDoublePaymentMail(
+                                $oOrder->oxorder__oxordernr->value,
+                                $oOrder->oxorder_oxtransid->rawValue,
+                                mysql_real_escape_string($_POST['orderNumber'])
+                            );
                             if ($showConfirmResponse) {
                                 die($this->_qcpConfirmResponse());
                             }
@@ -1048,8 +1065,10 @@ class qentapayment extends oxUBase
                     'price' => $oOrder->oxorder__oxdelcost->rawValue
                 ),
                 'paymethod cost' => array(
-                    'description' => $oLang->translateString('SURCHARGE',
-                            $iLangId) . ' ' . $oLang->translateString('PAYMENT_METHOD', $iLangId),
+                    'description' => $oLang->translateString(
+                        'SURCHARGE',
+                        $iLangId
+                    ) . ' ' . $oLang->translateString('PAYMENT_METHOD', $iLangId),
                     'vat' => $oOrder->oxorder__oxpayvat->rawValue,
                     'price' => $oOrder->oxorder__oxpaycost->rawValue
                 ),
@@ -1128,7 +1147,9 @@ class qentapayment extends oxUBase
             }
         }
 
-        return ($config->getConfigParam(sprintf('bQcp_%s_UseIframe',
-                strtolower($sPaymentType))) == 1) ? "IFRAME" : "PAGE";
+        return ($config->getConfigParam(sprintf(
+            'bQcp_%s_UseIframe',
+            strtolower($sPaymentType)
+        )) == 1) ? "IFRAME" : "PAGE";
     }
 }

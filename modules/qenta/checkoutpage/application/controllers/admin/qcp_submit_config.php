@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Shop System Plugins
  * - Terms of use can be found under
  * https://guides.qenta.com/shop_plugins:info
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ */
 
 class qcp_submit_config extends oxAdminView
 {
@@ -96,8 +97,10 @@ class qcp_submit_config extends oxAdminView
         }
 
         $Mail = oxRegistry::get('oxemail');
-        $Mail->setFrom(oxRegistry::getConfig()->getActiveShop()->oxshops__oxowneremail->rawValue,
-            oxRegistry::getConfig()->getActiveShop()->oxshops__oxname->rawValue);
+        $Mail->setFrom(
+            oxRegistry::getConfig()->getActiveShop()->oxshops__oxowneremail->rawValue,
+            oxRegistry::getConfig()->getActiveShop()->oxshops__oxname->rawValue
+        );
         $Mail->setRecipient($recipient);
         $Mail->setBody('<p>' . $confString . '</p><p>' . $comment . '</p>');
         $Mail->setAltBody($confString . "\n\n" . $comment);

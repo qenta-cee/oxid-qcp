@@ -1,11 +1,12 @@
 <?php
+
 /**
  * Shop System Plugins
  * - Terms of use can be found under
  * https://guides.qenta.com/shop_plugins:info
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ */
 
 /**
  * Payment class wrapper for QCP module
@@ -18,6 +19,8 @@ class qcp_payment extends qcp_payment_parent
     public function render()
     {
         $sReturn = parent::render();
+
+        setcookie("sid", $_COOKIE['sid'], time() + 180, "/" . '; samesite=' . "None; Secure", $_SESSION['host'], true, false);
 
         return $sReturn;
     }
@@ -34,7 +37,7 @@ class qcp_payment extends qcp_payment_parent
     {
         $config = oxRegistry::getConfig();
 
-        if(isset($_SESSION['qcp-consumerDeviceId'])) {
+        if (isset($_SESSION['qcp-consumerDeviceId'])) {
             $consumerDeviceId = $_SESSION['qcp-consumerDeviceId'];
         } else {
             $timestamp = microtime();
@@ -42,11 +45,11 @@ class qcp_payment extends qcp_payment_parent
             $_SESSION['qcp-consumerDeviceId'] = $consumerDeviceId;
         }
 
-        if($config->getConfigParam('sQcpInvoiceProvider') == "RATEPAY" || $config->getConfigParam('sQcpInstallmentProvider') == "RATEPAY") {
-            $ratepay = '<script language="JavaScript">var di = {t:"'.$consumerDeviceId.'",v:"WDWL",l:"Checkout"};</script>';
-            $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/'.$consumerDeviceId.'/di.js"></script>';
-            $ratepay .= '<noscript><link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t='.$consumerDeviceId.'&v=WDWL&l=Checkout"></noscript>';
-            $ratepay .= '<object type="application/x-shockwave-flash" data="//d.ratepay.com/WDWL/c.swf" width="0" height="0"><param name="movie" value="//d.ratepay.com/WDWL/c.swf" /><param name="flashvars" value="t='.$consumerDeviceId.'&v=WDWL"/><param name="AllowScriptAccess" value="always"/></object>';
+        if ($config->getConfigParam('sQcpInvoiceProvider') == "RATEPAY" || $config->getConfigParam('sQcpInstallmentProvider') == "RATEPAY") {
+            $ratepay = '<script language="JavaScript">var di = {t:"' . $consumerDeviceId . '",v:"WDWL",l:"Checkout"};</script>';
+            $ratepay .= '<script type="text/javascript" src="//d.ratepay.com/' . $consumerDeviceId . '/di.js"></script>';
+            $ratepay .= '<noscript><link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t=' . $consumerDeviceId . '&v=WDWL&l=Checkout"></noscript>';
+            $ratepay .= '<object type="application/x-shockwave-flash" data="//d.ratepay.com/WDWL/c.swf" width="0" height="0"><param name="movie" value="//d.ratepay.com/WDWL/c.swf" /><param name="flashvars" value="t=' . $consumerDeviceId . '&v=WDWL"/><param name="AllowScriptAccess" value="always"/></object>';
 
             return $ratepay;
         }
@@ -60,57 +63,57 @@ class qcp_payment extends qcp_payment_parent
         $imgPath = $conf->getConfigParam('sShopURL') . '/modules/' . $modulePaths['qentacheckoutpage'] . '/out/img/';
         switch ($paymethod) {
             case 'qcp_bancontact_mistercash':
-                return '<img src="' . $imgPath . 'bancontact_mistercash.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'bancontact_mistercash.png" />';
             case 'qcp_ccard':
-                return '<img src="' . $imgPath . 'ccard.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'ccard.png" />';
             case 'qcp_ccard-moto':
-                return '<img src="' . $imgPath . 'ccard.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'ccard.png" />';
             case 'qcp_ekonto':
-                return '<img src="' . $imgPath . 'ekonto.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'ekonto.png" />';
             case 'qcp_epay_bg':
-                return '<img src="' . $imgPath . 'epay_bg.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'epay_bg.png" />';
             case 'qcp_eps':
-                return '<img src="' . $imgPath . 'eps.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'eps.png" />';
             case 'qcp_giropay':
-                return '<img src="' . $imgPath . 'giropay.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'giropay.jpg" />';
             case 'qcp_idl':
-                return '<img src="' . $imgPath . 'idl.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'idl.png" />';
             case 'qcp_installment':
-                return '<img src="' . $imgPath . 'installment.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'installment.jpg" />';
             case 'qcp_invoice_b2b':
-                return '<img src="' . $imgPath . 'invoice.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'invoice.png" />';
             case 'qcp_invoice_b2c':
-                return '<img src="' . $imgPath . 'invoice.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'invoice.png" />';
             case 'qcp_maestro':
-                return '<img src="' . $imgPath . 'maestro.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'maestro.png" />';
             case 'qcp_moneta':
-                return '<img src="' . $imgPath . 'moneta.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'moneta.jpg" />';
             case 'qcp_masterpass':
-                return '<img src="' . $imgPath . 'masterpass.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'masterpass.png" />';
             case 'qcp_paypal':
-                return '<img src="' . $imgPath . 'paypal.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'paypal.png" />';
             case 'qcp_pbx':
-                return '<img src="' . $imgPath . 'pbx.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'pbx.jpg" />';
             case 'qcp_poli':
-                return '<img src="' . $imgPath . 'poli.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'poli.png" />';
             case 'qcp_przelewy24':
-                return '<img src="' . $imgPath . 'przelewy24.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'przelewy24.jpg" />';
             case 'qcp_psc':
-                return '<img src="' . $imgPath . 'psc.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'psc.png" />';
             case 'qcp_sepa-dd':
-                return '<img src="' . $imgPath . 'sepa.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'sepa.png" />';
             case 'qcp_skrillwallet':
-                return '<img src="' . $imgPath . 'skrillwallet.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'skrillwallet.jpg" />';
             case 'qcp_sofortueberweisung':
-                return '<img src="' . $imgPath . 'sofort.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'sofort.png" />';
             case 'qcp_tatrapay':
-                return '<img src="' . $imgPath . 'tatrapay.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'tatrapay.jpg" />';
             case 'qcp_trustly':
-                return '<img src="' . $imgPath . 'trustly.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'trustly.jpg" />';
             case 'qcp_voucher':
-                return '<img src="' . $imgPath . 'voucher.png" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'voucher.png" />';
             case 'qcp_trustpay':
-                return '<img src="' . $imgPath . 'trustpay.jpg" />';
+                return '<img style="margin: 0 8px; width: 1.5rem;" src="' . $imgPath . 'trustpay.jpg" />';
             default:
                 return null;
         }
@@ -144,23 +147,27 @@ class qcp_payment extends qcp_payment_parent
         $oConfig = oxRegistry::getConfig();
         $oSession = $this->getSession();
         $oUser = $this->getUser();
-        $sPaymentId = (string )$oConfig->getRequestParameter('paymentid');
+        $sPaymentId = (string)$oConfig->getRequestParameter('paymentid');
         $oLang = oxRegistry::get('oxLang');
 
         if (in_array($sPaymentId, array('qcp_idl', 'qcp_eps'))) {
             $oSession->setVariable('financialInstitution', oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_financialInstitution'));
         }
 
-        if (in_array($sPaymentId,array('qcp_invoice_b2c','qcp_installment'))) {
+        if (in_array($sPaymentId, array('qcp_invoice_b2c', 'qcp_installment'))) {
             if ($this->hasQcpDobField($sPaymentId) && $oUser->oxuser__oxbirthdate == '0000-00-00') {
                 $iBirthdayYear = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayYear');
                 $iBirthdayDay = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayDay');
                 $iBirthdayMonth = oxRegistry::getConfig()->getRequestParameter($sPaymentId . '_iBirthdayMonth');
 
                 if (empty($iBirthdayYear) || empty($iBirthdayDay) || empty($iBirthdayMonth)) {
-                    $oSession->setVariable('qcp_payerrortext',
-                        $oLang->translateString('QENTA_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
-                            $oLang->getBaseLanguage()));
+                    $oSession->setVariable(
+                        'qcp_payerrortext',
+                        $oLang->translateString(
+                            'QENTA_CHECKOUT_PAGE_PLEASE_FILL_IN_DOB',
+                            $oLang->getBaseLanguage()
+                        )
+                    );
 
                     return;
                 }
@@ -176,9 +183,13 @@ class qcp_payment extends qcp_payment_parent
 
             //validate paymethod
             if (!$this->qcpValidateCustomerAge($oUser, 18)) {
-                $oSession->setVariable('qcp_payerrortext',
-                    sprintf($oLang->translateString('QENTA_CHECKOUT_PAGE_DOB_TOO_YOUNG',
-                        $oLang->getBaseLanguage()), 18));
+                $oSession->setVariable(
+                    'qcp_payerrortext',
+                    sprintf($oLang->translateString(
+                        'QENTA_CHECKOUT_PAGE_DOB_TOO_YOUNG',
+                        $oLang->getBaseLanguage()
+                    ), 18)
+                );
 
                 return;
             }
@@ -210,14 +221,17 @@ class qcp_payment extends qcp_payment_parent
                     }
                 }
             }
-
         }
 
         if ($this->showQcpTrustedShopsCheckbox($sPaymentId)) {
             if (!oxRegistry::getConfig()->getRequestParameter('payolutionTerms')) {
-                $oSession->setVariable('qcp_payerrortext',
-                    $oLang->translateString('QENTA_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS',
-                        $oLang->getBaseLanguage()));
+                $oSession->setVariable(
+                    'qcp_payerrortext',
+                    $oLang->translateString(
+                        'QENTA_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS',
+                        $oLang->getBaseLanguage()
+                    )
+                );
 
                 $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                 $oSmarty->assign("aErrors", array('payolutionTerms' => 1));
@@ -290,7 +304,8 @@ class qcp_payment extends qcp_payment_parent
         //if delivery Address is not set it's the same as billing
         $oDelAddress = $oOrder->getDelAddressInfo();
         if ($oDelAddress) {
-            if ($oDelAddress->oxaddress__oxcompany->value != $oUser->oxuser__oxcompany->value ||
+            if (
+                $oDelAddress->oxaddress__oxcompany->value != $oUser->oxuser__oxcompany->value ||
                 $oDelAddress->oxaddress__oxfname->value != $oUser->oxuser__oxfname->value ||
                 $oDelAddress->oxaddress__oxlname->value != $oUser->oxuser__oxlname->value ||
                 $oDelAddress->oxaddress__oxstreet->value != $oUser->oxuser__oxstreet->value ||
@@ -317,7 +332,7 @@ class qcp_payment extends qcp_payment_parent
      * @param Array $aAllowedCurrencies
      * @return boolean
      */
-    public function qcpValidateCurrency($oBasket, $aAllowedCurrencies = Array('EUR'))
+    public function qcpValidateCurrency($oBasket, $aAllowedCurrencies = array('EUR'))
     {
         $currency = $oBasket->getBasketCurrency();
         if (!in_array($currency->name, $aAllowedCurrencies)) {
@@ -348,9 +363,10 @@ class qcp_payment extends qcp_payment_parent
         $oLang = oxRegistry::get('oxLang');
         $conf = oxRegistry::getConfig();
 
-        return sprintf($oLang->translateString('QENTA_CHECKOUT_PAGE_PAYOLUTION_TERMS', $oLang->getBaseLanguage()),
-            'https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $conf->getConfigParam('sQcpPayolutionMId'));
-
+        return sprintf(
+            $oLang->translateString('QENTA_CHECKOUT_PAGE_PAYOLUTION_TERMS', $oLang->getBaseLanguage()),
+            'https://payment.payolution.com/payolution-payment/infoport/dataprivacyconsent?mId=' . $conf->getConfigParam('sQcpPayolutionMId')
+        );
     }
 
     /**

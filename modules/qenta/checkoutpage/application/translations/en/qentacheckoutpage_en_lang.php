@@ -38,5 +38,8 @@ $aLang = array(
     'QENTA_CHECKOUT_PAGE_CONFIRM_PAYOLUTION_TERMS' => 'Please agree to payolution terms.',
     'QENTA_CHECKOUT_PAGE_PAYOLUTION_TERMS' => 'I agree that the data which are necessary for the liquidation of invoice payments and which are used to complete the identity and credit check are transmitted to payolution. My <a href="%s" target="_blank"><strong>consent</strong></a> can be revoked at any time with future effect.',
     'QENTA_CHECKOUT_PAGE_VAT_ID_MISSING' => 'VAT number is missing.',
-    'QENTA_CHECKOUT_PAGE_PENDING_PAYMENT' => 'Your financial institution has not yet approved the payment.'
+    'QENTA_CHECKOUT_PAGE_PENDING_PAYMENT' => 'Your financial institution has not yet approved the payment.',
+    'ORDER_OVERVIEW_QCP_PROVIDERREFERENCENUMBER' => 'Provider Reference Number',
+    'ORDER_OVERVIEW_QCP_PROVIDERCONTRACTNUMBER' => 'Provider Contract Number',
+    'ORDER_OVERVIEW_QCP_PROVIDERTOKENID' => 'Provider Token ID'
 );

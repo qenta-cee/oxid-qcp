@@ -1,17 +1,20 @@
 <?php
+
 /**
  * Shop System Plugins
  * - Terms of use can be found under
  * https://guides.qenta.com/shop_plugins:info
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ */
 
 class qcp_order extends qcp_order_parent
 {
 
     public function init()
     {
+        setcookie("sid", $_COOKIE['sid'], time() + 180, "/" . '; samesite=' . "None; Secure", $_SESSION['host'], true, false);
+
         return parent::init();
     }
 
@@ -35,14 +38,17 @@ class qcp_order extends qcp_order_parent
 
                 /** @var qcp_OrderDbGateway $oDbOrder */
                 $oDbOrder = oxNew('qcp_OrderDbGateway');
-                $aOrderData = Array(
+                $aOrderData = array(
                     'BASKET' => $oSession->getVariable('qcpBasket'),
                     'OXORDERID' => $oOrder->getId()
                 );
                 $oDbOrder->insert($aOrderData);
 
-                $checkoutType = qentapayment::getCheckoutType(str_replace('qcp_', '',
-                    $oPayment->oxpayments__oxid->value));
+                $checkoutType = qentapayment::getCheckoutType(str_replace(
+                    'qcp_',
+                    '',
+                    $oPayment->oxpayments__oxid->value
+                ));
 
                 if ($checkoutType == 'IFRAME') {
                     return 'qentapayment?fnc=checkoutIFrame';

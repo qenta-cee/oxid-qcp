@@ -1,16 +1,17 @@
 <?php
+
 /**
  * Shop System Plugins
  * - Terms of use can be found under
  * https://guides.qenta.com/shop_plugins:info
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ */
 
 /**
  * Metadata version
  */
-$sMetadataVersion = '2.1';
+$sMetadataVersion = '3.0';
 
 /**
  * Module information
@@ -103,19 +104,19 @@ $aModule = array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpCustomerId',
             'type' => 'str',
-            'value' => 'D200001'
+            'value' => 'D200411'
         ),
         array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpShopId',
             'type' => 'str',
-            'value' => ''
+            'value' => '3D'
         ),
         array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpSecret',
             'type' => 'str',
-            'value' => 'B8AKTPWBRMNBV455FG6M2DANE99WU2'
+            'value' => 'DP4TMTPQQWFJW34647RM798E9A5X7E8ATP462Z4VGZK53YEJ3JWXS98B9P4F'
         ),
         array(
             'group' => 'qcp_parameters',
@@ -139,7 +140,7 @@ $aModule = array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpMaxRetries',
             'type' => 'str',
-            'value' => ''
+            'value' => '3'
         ),
         array(
             'group' => 'qcp_parameters',
@@ -261,85 +262,85 @@ $aModule = array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_bancontact_mistercash_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_ccard_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_ccard-moto_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_masterpass_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_ekonto_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_epay_bg_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_eps_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_giropay_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_idl_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_installment_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_invoice_b2b_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_invoice_b2c_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_maestro_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_moneta_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
@@ -351,43 +352,43 @@ $aModule = array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_pbx_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_poli_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_przelewy24_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_psc_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_select_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_sepa-dd_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_skrillwallet_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
@@ -399,25 +400,25 @@ $aModule = array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_tatrapay_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_trustly_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_voucher_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_trustpay_UseIframe',
             'type' => 'bool',
-            'value' => '1'
+            'value' => '0'
         ),
 
         array(
@@ -466,6 +467,3 @@ $aModule = array(
         ),
     ),
 );
-
-
-

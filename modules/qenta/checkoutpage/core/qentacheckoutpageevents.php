@@ -1,17 +1,18 @@
 <?php
+
 /**
  * Shop System Plugins
  * - Terms of use can be found under
  * https://guides.qenta.com/shop_plugins:info
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
-*/
+ */
 
 class qentaCheckoutPageEvents
 {
     public static function getAvailablePaymenttypes()
     {
-        return Array(
+        return array(
             'CCARD' => array('weight' => 1, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 1),
             'CCARD-MOTO' => array('weight' => 2, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'MAESTRO' => array('weight' => 3, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
@@ -94,8 +95,10 @@ class qentaCheckoutPageEvents
 
             foreach ($aLanguages as $iLanguageId => $sLangCode) {
                 $oPayment->setLanguage($iLanguageId);
-                $oPayment->oxpayments__oxlongdesc = new oxField($oLang->translateString($trkey . '_DESC',
-                    $iLanguageId));
+                $oPayment->oxpayments__oxlongdesc = new oxField($oLang->translateString(
+                    $trkey . '_DESC',
+                    $iLanguageId
+                ));
                 $paymethodName = $oLang->translateString($trkey . '_LABEL', $iLanguageId);
                 $oPayment->oxpayments__oxdesc = new oxField('QCP ' . $paymethodName);
                 $oPayment->save();
