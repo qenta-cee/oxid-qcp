@@ -3,7 +3,7 @@
 /**
  * Shop System Plugins
  * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins:info
+ * https://guides.qenta.com/shop_plugins/info/
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
  */
@@ -20,11 +20,11 @@ $aModule = array(
     'id' => 'qentacheckoutpage',
     'title' => 'QENTA Checkout Page',
     'description' => array(
-        'de' => 'QENTA Checkout Page Extension zur Bezahlung f&uuml;r Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support und Vertrieb:</strong><br /><a href="https://guides.qenta.com/support" target="_blank">Support</a><br /><a href="https://guides.qenta.com/sales" target="_blank">Sales</a></div></div>',
-        'en' => 'QENTA Checkout Page Payment Extension for Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support and sales information</strong><br /><a href="https://guides.qenta.com/support" target="_blank">support</a><br /><a href="https://guides.qenta.com/sales" target="_blank">sales</a></div></div>',
+        'de' => 'QENTA Checkout Page Extension zur Bezahlung f&uuml;r Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support und Vertrieb:</strong><br /><a href="https://guides.qenta.com/contact/" target="_blank">Support</a><br /><a href="https://guides.qenta.com/contact/" target="_blank">Sales</a></div></div>',
+        'en' => 'QENTA Checkout Page Payment Extension for Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support and sales information</strong><br /><a href="https://guides.qenta.com/contact/" target="_blank">support</a><br /><a href="https://guides.qenta.com/contact/" target="_blank">sales</a></div></div>',
     ),
     'thumbnail' => 'qenta.svg',
-    'version' => '3.0.0',
+    'version' => '3.0.1',
     'author' => 'QENTA Payment CEE GmbH',
     'email' => 'support@qenta.com',
     'url' => 'https://www.qenta-cee.com/',

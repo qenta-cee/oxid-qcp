@@ -3,7 +3,7 @@
 /**
  * Shop System Plugins
  * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins:info
+ * https://guides.qenta.com/shop_plugins/info/
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
  */
@@ -22,7 +22,7 @@ class qentapayment extends oxUBase
     protected static $_PAYMENT_QENTA_CHECKOUT_URL = 'api.qenta.com';
     protected static $_PAYMENT_INIT_URL = 'https://api.qenta.com/page/init-server.php';
 
-    protected static $_PLUGIN_VERSION = '3.0.0';
+    protected static $_PLUGIN_VERSION = '3.0.1';
 
     protected static $_CUSTOMER_ID_DEMO_MODE = 'D200001';
     protected static $_CUSTOMER_ID_TEST_MODE = 'D200411';
