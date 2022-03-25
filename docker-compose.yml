@@ -35,6 +35,7 @@ services:
       OXID_ADMIN_EMAIL: ${OXID_ADMIN_EMAIL:-admin@admin.com}
       PLUGIN_VERSION: ${PLUGIN_VERSION}
       PLUGIN_URL: ${PLUGIN_URL:-local}
+      PLUGIN_ID: ${PLUGIN_ID:-qentacheckoutpage}
       NGROK_TOKEN: ${NGROK_TOKEN}
       OVERRIDE_API_URL: ${OVERRIDE_API_URL}
       GITHUB_SERVER_URL: ${GITHUB_SERVER_URL}

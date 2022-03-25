@@ -3,7 +3,7 @@
 /**
  * Shop System Plugins
  * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins/info/
+ * https://guides.qenta.com/plugins/#legalNotice
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
  */
@@ -340,7 +340,7 @@ class qentapayment extends oxUBase
         $request['displayText'] = $oConfig->getConfigParam('sQcpDisplayText');
         $request['imageUrl'] = $oConfig->getConfigParam('sQcpImageUrl');
 
-        $request['autoDeposit'] = ($oConfig->getConfigParam('bQcpAutoDeposit') == 1) ? 'yes' : 'no';
+        $request['autoDeposit'] = 'no';
         $request['confirmMail'] = $oConfig->getConfigParam('bQcpConfirmMail');
         $request['maxRetries'] = $oConfig->getConfigParam('sQcpMaxRetries');
         $request['paymenttypeSortOrder'] = $oConfig->getConfigParam('sQcpPaymentTypeSortOrder');

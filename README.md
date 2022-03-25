@@ -1,16 +1,16 @@
-# QENTA Checkout Page extension for OXID eSales
+# QENTA Checkout Page module for OXID eSales
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/qenta-cee/oxid-qcp/master/LICENSE)
-[![OXID eSales Community Edition 4.10.8](https://img.shields.io/badge/OXID_CE-v4.10.8-green.svg)](http://www.oxid-esales.com/)
-[![PHP v5.6](https://img.shields.io/badge/php-v5.6-green.svg)](http://www.php.net)
+[![OXID eSales Community Edition 6.4.1](https://img.shields.io/badge/OXID_CE-v6.4.1-green.svg)](http://www.oxid-esales.com/)
+[![PHP 7](https://img.shields.io/badge/php-7-green.svg)](http://www.php.net)
 
 ----
-QENTA Checkout Page plugin for OXID.
+QENTA Checkout Page plugin for OXID
 
-Our [Online Guides](https://guides.qenta.com/) provide further information on payment methods and additional features. Please observe our [terms of use](https://guides.qenta.com/shop_plugins/info/#TermsOfUse) regarding plugins.
+Our [Online Guides](https://guides.qenta.com/) provide further information on payment methods and additional features. Please observe our [terms of use](https://guides.qenta.com/plugins/#legalNotice) regarding plugins.
 
 ## Installation
-Our [Online Guides](https://guides.qenta.com/shop_plugins/oxid_qcp/start "Installation details") also provide technical documentation, installation and configuration instructions for the plugin.
+Our [Online Guides](https://github.com/qenta-cee/oxid-qcp "Installation details") also provide technical documentation, installation and configuration instructions for the module.
 
 
 ## Qenta Checkout Page

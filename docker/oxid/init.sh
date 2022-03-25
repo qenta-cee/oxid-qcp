@@ -40,6 +40,7 @@ function install_core() {
   yes | composer create-project --keep-vcs oxid-esales/oxideshop-project ${SHOP_ROOT_PATH} ${V}
   ln -s ${SHOP_ROOT_PATH}/source ${SHOP_ROOT_PATH}/html
   mv /home/oxid/config.inc.php ${SHOP_ROOT_PATH}/html/
+  rm -rf ${SHOP_ROOT_PATH}/source/modules/{tc,oe/oepaypal,fc,bestit}
 }
 
 function inject_sql() {
@@ -65,21 +66,32 @@ function install_demodata() {
 function install_plugin() {
   cp -r /modules/* ${SHOP_ROOT_PATH}/source/modules/
   local MODULE_SOURCE_PATH=${SHOP_ROOT_PATH}/source/modules/qenta/checkoutpage
+  ${SHOP_ROOT_PATH}/vendor/bin/oe-console oe:module:uninstall-configuration tcklarna || true
+  ${SHOP_ROOT_PATH}/vendor/bin/oe-console oe:module:uninstall-configuration fcpayone || true
+  ${SHOP_ROOT_PATH}/vendor/bin/oe-console oe:module:uninstall-configuration oepaypal || true
+  ${SHOP_ROOT_PATH}/vendor/bin/oe-console oe:module:uninstall-configuration bestitamazonpay4oxid || true
   ${SHOP_ROOT_PATH}/vendor/bin/oe-console oe:module:install-configuration ${MODULE_SOURCE_PATH}
+  ${SHOP_ROOT_PATH}/vendor/bin/oe-console oe:module:activate ${PLUGIN_ID}
 }
 
 function setup_store() {
-  rm -rf ${SHOP_ROOT_PATH}/source/Setup/
+  rm -rf ${SHOP_ROOT_PATH}/source/Setup
   ${SHOP_ROOT_PATH}/vendor/bin/oe-eshop-db_views_regenerate
+}
+
+function set_folder_permissions() {
+  for e in source/export source/log source/out/pictures source/out/media source/tmp var; do
+    chmod 766 ${SHOP_ROOT_PATH}/${e}
+  done
+  chmod 555 ${SHOP_ROOT_PATH}/source/{.htaccess,config.inc.php}
 }
 
 function print_info() {
   echo
   echo '####################################'
   echo
-  echo "Shop: ${SHOP_URL_SSL}"
+  echo "Shop: ${SHOP_URL_SSL}/"
   echo "Admin Panel: ${SHOP_URL_SSL}/admin/"
-  echo "Plugin Config: ${SHOP_URL_SSL}/"
   echo "User: ${OXID_ADMIN_USER}"
   echo "Password: ${OXID_ADMIN_PASS}"
   echo
@@ -104,6 +116,8 @@ setup_store
 _log "store set up"
 update_admin_account
 _log "changed default admin account credentials"
+set_folder_permissions
+_log "set folder permissions"
 
 if [[ ${CI} != 'true' ]]; then
   print_info

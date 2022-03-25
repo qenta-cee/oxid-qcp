@@ -16,23 +16,27 @@ RUN echo 'error_log = /dev/stderr' >> /usr/local/etc/php/conf.d/log_errors.ini
 # to avoid all too common aborts because of debian repo timeouts
 RUN echo 'APT::Acquire::Retries "30";' > /etc/apt/apt.conf.d/80-retries
 
+# install npm nodesource repo
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+
 # upgrade package list and default packages
 RUN apt-get -qq update
 RUN apt-get -qq upgrade
 
-# install php extension dependencies
-RUN apt-get -qq install libmemcached-dev zlib1g-dev libpng-dev libonig-dev libtidy-dev
+# install php extension dev dependencies
+RUN apt-get -qq install libmemcached-dev libfreetype-dev libzip-dev zlib1g-dev libxml2-dev libjpeg-dev libpng-dev libonig-dev libtidy-dev
 
-# install dependencies for WP-CLI aand tools
-RUN apt-get -qq install git unzip vim bat mariadb-client libzip-dev zip jq nodejs
+# install basic tools
+RUN apt-get -qq install nodejs git unzip vim wget mariadb-client zip jq
 
 # clean up to reduce docker image size
 RUN apt-get -qq autoremove
 
 # install PHP extensions required
 RUN bash -c "pecl install xdebug memcached &> /dev/null"
-RUN bash -c "docker-php-ext-install -j5 zip gd mbstring mysqli pdo pdo_mysql tidy bcmath &> /dev/null"
-RUN docker-php-ext-enable zip memcached xdebug gd mbstring mysqli pdo pdo_mysql tidy bcmath
+RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
+RUN bash -c "docker-php-ext-install -j5 gd soap zip mbstring mysqli pdo pdo_mysql tidy bcmath &> /dev/null"
+RUN docker-php-ext-enable soap zip memcached xdebug gd mbstring mysqli pdo pdo_mysql tidy bcmath
 
 # enable apache modules
 RUN a2enmod rewrite headers ext_filter expires
@@ -64,17 +68,14 @@ ENTRYPOINT [ "init.sh" ]
 # add user and dir for executing composer
 RUN useradd -u 431 -r -g www-data -s /sbin/nologin -c "oxid user" oxid
 RUN mkdir -p /home/oxid && chown -R oxid:www-data /home/oxid /var/www/html /etc/ssl
+COPY docker/oxid/config.inc.php /home/oxid/config.inc.php
 # oxid needs to write to parent directory of shop
-RUN chown -R oxid:www-data /var/www
+RUN chown -R oxid:www-data /var/www /home/oxid/config.inc.php
 USER oxid
 WORKDIR /home/oxid
 
-
 # copy module
 COPY modules /modules
-COPY docker/oxid/config.inc.php /home/oxid/config.inc.php
-
-
 
 RUN mkdir /tmp/oxid-data
 WORKDIR /tmp/oxid-data

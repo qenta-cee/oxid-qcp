@@ -2,7 +2,7 @@
 /**
  * Shop System Plugins
  * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins/info/
+ * https://guides.qenta.com/plugins/#legalNotice
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
 */
@@ -24,8 +24,6 @@ $aLang = array(
     'HELP_SHOP_MODULE_sQcpServiceUrl' => 'URL on the payment page which leads to the imprint page of the online shop. <a href="https://guides.qenta.com/request_parameters/#serviceurl" target="_blank">More information: serviceUrl</a>',
     'SHOP_MODULE_sQcpDisplayText' => 'Text on payment page',
     'HELP_SHOP_MODULE_sQcpDisplayText' => 'Text displayed during the payment process, i.e. "Thank you for ordering in xy-shop". <a href="https://guides.qenta.com/request_parameters/#displaytext" target="_blank">More information: displayText</a>',
-    'SHOP_MODULE_bQcpAutoDeposit' => 'Automated deposit',
-    'HELP_SHOP_MODULE_bQcpAutoDeposit' => 'Enabling an automated deposit of payments.  <a href="https://guides.qenta.com/request_parameters/#autodeposit" target="_blank">More information</a>. Please contact our <a href="https://guides.qenta.com/contact/" target="_blank">sales teams</a> to activate this feature.',
     'SHOP_MODULE_sQcpBackgroundColor' => 'Background color for credit card logos',
     'HELP_SHOP_MODULE_sQcpBackgroundColor' => 'Background color for the image containing the credit card brand logos. <a href="https://guides.qenta.com/request_parameters/#backgroundcolor" target="_blank">More information: backgroundColor</a>',
     'SHOP_MODULE_bQcpUseLayout' => 'Device type optimization',

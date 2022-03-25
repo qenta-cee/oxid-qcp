@@ -3,7 +3,7 @@
 /**
  * Shop System Plugins
  * - Terms of use can be found under
- * https://guides.qenta.com/shop_plugins/info/
+ * https://guides.qenta.com/plugins/#legalNotice
  * - License can be found under:
  * https://github.com/qenta-cee/oxid-qcp/blob/master/LICENSE
  */
@@ -24,10 +24,10 @@ $aModule = array(
         'en' => 'QENTA Checkout Page Payment Extension for Oxid eShop.<br /><br /><div id="helpPanel"><div class="bd"><strong>Support and sales information</strong><br /><a href="https://guides.qenta.com/contact/" target="_blank">support</a><br /><a href="https://guides.qenta.com/contact/" target="_blank">sales</a></div></div>',
     ),
     'thumbnail' => 'qenta.svg',
-    'version' => '3.0.1',
+    'version' => '3.5',
     'author' => 'QENTA Payment CEE GmbH',
     'email' => 'support@qenta.com',
-    'url' => 'https://www.qenta-cee.com/',
+    'url' => 'https://guides.qenta.com/contact/',
     'extend' => array(
         'order' => 'qenta/checkoutpage/application/controllers/qcp_order',
         'payment' => 'qenta/checkoutpage/application/controllers/qcp_payment',
@@ -96,26 +96,26 @@ $aModule = array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpPluginMode',
             'type' => 'select',
-            'value' => '1',
+            'value' => 'Test',
             'constraints' => 'Demo|Test|Live'
         ),
         array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpCustomerId',
             'type' => 'str',
-            'value' => 'D200411'
+            'value' => 'D200410'
         ),
         array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpShopId',
             'type' => 'str',
-            'value' => '3D'
+            'value' => 'page'
         ),
         array(
             'group' => 'qcp_parameters',
             'name' => 'sQcpSecret',
             'type' => 'str',
-            'value' => 'DP4TMTPQQWFJW34647RM798E9A5X7E8ATP462Z4VGZK53YEJ3JWXS98B9P4F'
+            'value' => 'UVNWUCQ7AGE9F5837YW53JBWDP77PWDHS2DMC3TMJ8VYB42G2WM4FWYTK5Z9'
         ),
         array(
             'group' => 'qcp_parameters',
@@ -140,12 +140,6 @@ $aModule = array(
             'name' => 'sQcpMaxRetries',
             'type' => 'str',
             'value' => '3'
-        ),
-        array(
-            'group' => 'qcp_parameters',
-            'name' => 'bQcpAutoDeposit',
-            'type' => 'bool',
-            'value' => '1'
         ),
         array(
             'group' => 'qcp_parameters',
