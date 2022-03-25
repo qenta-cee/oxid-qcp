@@ -278,7 +278,7 @@ class qentapayment extends oxUBase
         $shopVersion = $oConfig->getVersion() . ' ' . $oConfig->getRevision();
         $pluginName = 'QENTA_QCP';
         $pluginVersion = self::$_PLUGIN_VERSION;
-        $versionString = base64_encode($shopName . '; ' . $shopVersion . '; mobile detect ' . WirecardCEE_MobileDetect::VERSION . '; ' . $pluginName . '; ' . $pluginVersion);
+        $versionString = base64_encode($shopName . '; ' . $shopVersion . '; ' . $pluginName . '; ' . $pluginVersion);
         $paymenttypeShop = strtoupper(str_replace('qcp_', '', $oOrder->oxorder__oxpaymenttype->value));
         $paymenttype = $paymenttypeShop;
 
@@ -505,16 +505,6 @@ class qentapayment extends oxUBase
         $request['checkoutType'] = self::getCheckoutType($paymenttypeShop);
         if ($request['checkoutType'] == 'IFRAME') {
             $request['windowName'] = 'qcpIFrame';
-        }
-
-        if ($this->getConfig()->getConfigParam('bQcpDisableDeviceDetection') == 1) {
-            $device = self::_getClientDevice();
-            if ($device == 'tablet' || $device == 'smartphone') {
-                $request['checkoutType'] = 'PAGE';
-                if ($request['windowName']) {
-                    unset($request['windowName']);
-                }
-            }
         }
 
         if ($this->getConfig()->getConfigParam('bQcpUseLayout') == 1) {
@@ -1022,13 +1012,6 @@ class qentapayment extends oxUBase
         } else {
             oxRegistry::getUtils()->redirect($sNextStep);
         }
-    }
-
-    private static function _getClientDevice()
-    {
-        $detect = new WirecardCEE_MobileDetect;
-
-        return ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'smartphone') : 'desktop');
     }
 
     private function _getOrderBasketRequestParams($oOrder)

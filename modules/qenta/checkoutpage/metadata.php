@@ -11,7 +11,7 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '3.0';
+$sMetadataVersion = '1.2';
 
 /**
  * Module information
@@ -43,7 +43,6 @@ $aModule = array(
         'qentapayment' => 'qenta/checkoutpage/application/controllers/qentapayment.php',
         'qcp_submit_config' => 'qenta/checkoutpage/application/controllers/admin/qcp_submit_config.php',
         'qcp_OrderDbGateway' => 'qenta/checkoutpage/application/models/dbgateways/qcp_orderdbgateway.php',
-        'WirecardCEE_MobileDetect' => 'qenta/checkoutpage/vendor/wccee_mobile_detect.php',
         'qentaCheckoutPageEvents' => 'qenta/checkoutpage/core/qentacheckoutpageevents.php',
         'qcp_oxbasket' => 'qenta/checkoutpage/application/models/qcp_oxbasket.php',
     ),
@@ -146,7 +145,7 @@ $aModule = array(
             'group' => 'qcp_parameters',
             'name' => 'bQcpAutoDeposit',
             'type' => 'bool',
-            'value' => ''
+            'value' => '1'
         ),
         array(
             'group' => 'qcp_parameters',
@@ -156,15 +155,9 @@ $aModule = array(
         ),
         array(
             'group' => 'qcp_parameters',
-            'name' => 'bQcpAutoDeposit',
-            'type' => 'bool',
-            'value' => ''
-        ),
-        array(
-            'group' => 'qcp_parameters',
             'name' => 'bQcpDuplicateRequestCheck',
             'type' => 'bool',
-            'value' => ''
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_parameters',
@@ -242,7 +235,7 @@ $aModule = array(
             'group' => 'qcp_settings',
             'name' => 'bQcpUseLayout',
             'type' => 'bool',
-            'value' => ''
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_settings',
@@ -445,25 +438,25 @@ $aModule = array(
             'group' => 'qcp_installment_invoice_settings',
             'name' => 'bQcpInstallmentTrustedShopsCheckbox',
             'type' => 'bool',
-            'value' => ''
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_installment_invoice_settings',
             'name' => 'bQcpInvoiceb2bTrustedShopsCheckbox',
             'type' => 'bool',
-            'value' => ''
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_installment_invoice_settings',
             'name' => 'bQcpInvoiceb2cTrustedShopsCheckbox',
             'type' => 'bool',
-            'value' => ''
+            'value' => '0'
         ),
         array(
             'group' => 'qcp_installment_invoice_settings',
             'name' => 'bQcpPayolutionAllowDifferingAddresses',
             'type' => 'bool',
-            'value' => ''
+            'value' => '1'
         ),
     ),
 );

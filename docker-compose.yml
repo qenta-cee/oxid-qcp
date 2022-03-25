@@ -1,0 +1,44 @@
+services:
+  oxid_db:
+    container_name: oxid_db
+    image: mariadb:10.5
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${OXID_DB_ROOTPASS:-ABC123}
+      MYSQL_DATABASE: ${OXID_DB_NAME:-oxid}
+      MYSQL_USER: ${OXID_DB_USER:-oxid}
+      MYSQL_PASSWORD: ${OXID_DB_PASS:-oxid}
+  oxid:
+    container_name: oxid
+    build:
+      context: ./
+      dockerfile: docker/oxid/Dockerfile
+    depends_on:
+      - oxid_db
+    ports:
+      - ${PORT_HTTP:-8000}:80
+      - ${PORT_SSL:-8443}:443
+    # volumes:
+    #   - ./:/tmp/plugin:ro
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/source
+      SHOP_URL: ${SHOP_URL}
+      OXID_VERSION: ${OXID_VERSION:-latest}
+      OXID_DB_HOST: ${OXID_DB_HOST:-oxid_db}
+      OXID_DB_NAME: ${OXID_DB_NAME:-oxid}
+      OXID_DB_USER: ${OXID_DB_USER:-oxid}
+      OXID_DB_PASS: ${OXID_DB_PASS:-oxid}
+      OXID_TABLE_PREFIX: "oxid_"
+      OXID_TITLE: ${OXID_TITLE:-QSHOP}
+      OXID_ADMIN_USER: ${OXID_ADMIN_USER:-admin}
+      OXID_ADMIN_PASS: ${OXID_ADMIN_PASS:-admin123}
+      OXID_ADMIN_EMAIL: ${OXID_ADMIN_EMAIL:-admin@admin.com}
+      PLUGIN_VERSION: ${PLUGIN_VERSION}
+      PLUGIN_URL: ${PLUGIN_URL:-local}
+      NGROK_TOKEN: ${NGROK_TOKEN}
+      OVERRIDE_API_URL: ${OVERRIDE_API_URL}
+      GITHUB_SERVER_URL: ${GITHUB_SERVER_URL}
+      GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}
+      GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}
+      GITHUB_SHA: ${GITHUB_SHA}
+      GITHUB_REF: ${GITHUB_REF}
