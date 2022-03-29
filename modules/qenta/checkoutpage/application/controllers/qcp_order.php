@@ -13,7 +13,7 @@ class qcp_order extends qcp_order_parent
 
     public function init()
     {
-        setcookie("sid", $_COOKIE['sid'], time() + 180, "/" . '; samesite=' . "None; Secure", $_SESSION['host'], true, false);
+        header('Set-Cookie: ' . 'sid' . '=' . $_COOKIE['sid'], time() + 180, "/" . '; SameSite=None; Secure');
 
         return parent::init();
     }

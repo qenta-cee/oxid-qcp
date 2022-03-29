@@ -14,19 +14,18 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
     {
         $paymentList = parent::getPaymentList($sShipSetId, $dPrice, $oUser);
 
-        if (array_key_exists('qcp_invoice_b2b', $paymentList) || array_key_exists('qcp_invoice_b2c',
-                $paymentList) || array_key_exists('qcp_installment', $paymentList)
+        if (array_key_exists('qcp_invoice', $paymentList) || array_key_exists('qcp_installment', $paymentList)
         ) {
             $dob = $oUser->oxuser__oxbirthdate->value;
 
             $oBasket = $this->getSession()->getBasket();
             $oOrder = oxNew('oxorder');
 
-            if (array_key_exists('qcp_invoice_b2c', $paymentList)) {
+            if (array_key_exists('qcp_invoice', $paymentList)) {
                 if (!$this->_isQCPInvoiceAvailable($oUser, $oBasket,
                         $oOrder) || !empty($oUser->oxuser__oxcompany->value)
                 ) {
-                    unset($paymentList['qcp_invoice_b2c']);
+                    unset($paymentList['qcp_invoice']);
                 } elseif ($dob && $dob == '0000-00-00') {
                     $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
                     $oSmarty->assign("bShowDobField", true);
@@ -34,24 +33,6 @@ class qcp_oxpaymentlist extends qcp_oxpaymentlist_parent
                     $dobData = oxRegistry::getSession()->getVariable('qcp_dobData');
                     if (!empty($dobData)) {
                         $oSmarty->assign("dobData", oxRegistry::getSession()->getVariable('qcp_dobData'));
-                    }
-                }
-            }
-
-            if (array_key_exists('qcp_invoice_b2b', $paymentList)) {
-                $vatId = $oUser->oxuser__oxustid->value;
-
-                if (!$this->_isQCPInvoiceAvailable($oUser, $oBasket,
-                        $oOrder) || empty($oUser->oxuser__oxcompany->value)
-                ) {
-                    unset($paymentList['qcp_invoice_b2b']);
-                }
-                if (oxRegistry::getConfig()->getConfigParam('sQcpInvoiceProvider') == 'PAYOLUTION') {
-                    $sVatId = oxRegistry::getSession()->getVariable('qcp_vatId');
-                    if (empty($vatId)) {
-                        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-                        $oSmarty->assign("sVatId", $sVatId);
-                        $oSmarty->assign("bShowVatIdField", true);
                     }
                 }
             }

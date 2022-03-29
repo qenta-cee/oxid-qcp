@@ -1,7 +1,7 @@
 # QENTA Checkout Page module for OXID eSales
 
 [![License](https://img.shields.io/badge/license-GPLv2-blue.svg)](https://raw.githubusercontent.com/qenta-cee/oxid-qcp/master/LICENSE)
-[![OXID eSales Community Edition 6.4.1](https://img.shields.io/badge/OXID_CE-v6.4.1-green.svg)](http://www.oxid-esales.com/)
+[![OXID eSales Community Edition 6.10.1](https://img.shields.io/badge/OXID_CE-v6.10.1-green.svg)](http://www.oxid-esales.com/)
 [![PHP 7](https://img.shields.io/badge/php-7-green.svg)](http://www.php.net)
 
 ----

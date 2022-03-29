@@ -15,40 +15,19 @@ class qentaCheckoutPageEvents
         return array(
             'CCARD' => array('weight' => 1, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 1),
             'CCARD-MOTO' => array('weight' => 2, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'MAESTRO' => array('weight' => 3, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'EPS' => array('weight' => 4, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'IDL' => array('weight' => 5, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'GIROPAY' => array('weight' => 6, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'TATRAPAY' => array('weight' => 7, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'TRUSTPAY' => array('weight' => 8, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'SOFORTUEBERWEISUNG' => array(
                 'weight' => 9,
                 'fromamount' => 0,
                 'toamount' => 100000,
                 'activatePaymethod' => 1
             ),
-            'SKRILLWALLET' => array('weight' => 11, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'MASTERPASS' => array('weight' => 12, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'BANCONTACT_MISTERCASH' => array(
-                'weight' => 13,
-                'fromamount' => 0,
-                'toamount' => 100000,
-                'activatePaymethod' => 0
-            ),
             'PRZELEWY24' => array('weight' => 14, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'MONETA' => array('weight' => 15, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'POLI' => array('weight' => 16, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'EKONTO' => array('weight' => 17, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'TRUSTLY' => array('weight' => 18, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
-            'PBX' => array('weight' => 19, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'PSC' => array('weight' => 20, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'PAYPAL' => array('weight' => 22, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 1),
-            'EPAY_BG' => array('weight' => 23, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'SEPA-DD' => array('weight' => 24, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 1),
-            'INVOICE_B2C' => array('weight' => 25, 'fromamount' => 10, 'toamount' => 3500, 'activatePaymethod' => 1),
-            'INVOICE_B2B' => array('weight' => 26, 'fromamount' => 25, 'toamount' => 3500, 'activatePaymethod' => 1),
+            'INVOICE' => array('weight' => 25, 'fromamount' => 10, 'toamount' => 3500, 'activatePaymethod' => 1),
             'INSTALLMENT' => array('weight' => 27, 'fromamount' => 150, 'toamount' => 3500, 'activatePaymethod' => 0),
-            'VOUCHER' => array('weight' => 28, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
             'SELECT' => array('weight' => 29, 'fromamount' => 0, 'toamount' => 100000, 'activatePaymethod' => 0),
         );
     }

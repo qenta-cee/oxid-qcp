@@ -34,30 +34,14 @@ class qentapayment extends oxUBase
     protected static $_VALID_PAYMENT_TYPES = array(
         'CCARD',
         'CCARD-MOTO',
-        'MAESTRO',
         'EPS',
-        'IDL',
-        'GIROPAY',
-        'TATRAPAY',
-        'TRUSTPAY',
         'SOFORTUEBERWEISUNG',
-        'SKRILLWALLET',
-        'MASTERPASS',
-        'BANCONTACT_MISTERCASH',
         'PRZELEWY24',
-        'MONETA',
-        'POLI',
-        'EKONTO',
-        'TRUSTLY',
-        'PBX',
         'PSC',
         'PAYPAL',
-        'EPAY_BG',
         'SEPA-DD',
-        'INVOICE_B2B',
-        'INVOICE_B2C',
+        'INVOICE',
         'INSTALLMENT',
-        'VOUCHER',
         'SELECT',
     );
 
@@ -284,8 +268,7 @@ class qentapayment extends oxUBase
 
         //change invoice and installment paymenttypes
         switch ($paymenttypeShop) {
-            case 'INVOICE_B2B':
-            case 'INVOICE_B2C':
+            case 'INVOICE':
                 $paymenttype = 'INVOICE';
                 break;
             case 'MAESTRO':
@@ -376,7 +359,7 @@ class qentapayment extends oxUBase
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
-                if ($paymenttypeShop == "qcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
+                if ($paymenttypeShop == "qcp_invoice" || !empty($oUser->oxuser__oxcompany->value)) {
                     $request['companyVatId'] = $oUser->oxuser__oxustid->value;
                     $request['companyName'] = $oUser->oxuser__oxcompany->value;
                 } else {
@@ -401,7 +384,7 @@ class qentapayment extends oxUBase
 
                 $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
 
-                if ($paymenttypeShop == "qcp_invoice_b2b" || !empty($oUser->oxuser__oxcompany->value)) {
+                if ($paymenttypeShop == "qcp_invoice" || !empty($oUser->oxuser__oxcompany->value)) {
                     $request['companyVatId'] = $oUser->oxuser__oxustid->value;
                     $request['companyName'] = $oUser->oxuser__oxcompany->value;
                 } else {
@@ -411,14 +394,6 @@ class qentapayment extends oxUBase
                     if ($consumerBirthDate != '0000-00-00') {
                         $request['consumerBirthDate'] = $consumerBirthDate;
                     }
-                }
-            } elseif ($oConfig->getConfigParam('sQcpInstallmentProvider') == 'RATEPAY') {
-                $request = array_merge($request, $this->_getOrderBasketRequestParams($oOrder));
-                $request = array_merge($request, $this->_getConsumerBillingRequestParams($oOrder));
-
-                $consumerBirthDate = is_array($oUser->oxuser__oxbirthdate->value) ? $oUser->convertBirthday($oUser->oxuser__oxbirthdate->value) : $oUser->oxuser__oxbirthdate->value;
-                if ($consumerBirthDate != '0000-00-00') {
-                    $request['consumerBirthDate'] = $consumerBirthDate;
                 }
             }
         }

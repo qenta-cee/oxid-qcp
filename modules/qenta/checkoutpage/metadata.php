@@ -38,8 +38,6 @@ $aModule = array(
         'oxuserpayment' => 'qenta/checkoutpage/application/models/qcp_oxuserpayment',
     ),
     'files' => array(
-        'out/lang/de/qcp_lang.php' => 'qenta/checkoutpage/out/lang/de/qcp_lang.php',
-        'out/lang/en/qcp_lang.php' => 'qenta/checkoutpage/out/lang/en/qcp_lang.php',
         'qentapayment' => 'qenta/checkoutpage/application/controllers/qentapayment.php',
         'qcp_submit_config' => 'qenta/checkoutpage/application/controllers/admin/qcp_submit_config.php',
         'qcp_OrderDbGateway' => 'qenta/checkoutpage/application/models/dbgateways/qcp_orderdbgateway.php',
@@ -97,7 +95,7 @@ $aModule = array(
             'name' => 'sQcpPluginMode',
             'type' => 'select',
             'value' => 'Test',
-            'constraints' => 'Demo|Test|Live'
+            'constraints' => 'Demo|Test|Production'
         ),
         array(
             'group' => 'qcp_parameters',
@@ -243,14 +241,6 @@ $aModule = array(
             'type' => 'str',
             'value' => 'Web Shop'
         ),
-
-
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_bancontact_mistercash_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_ccard_UseIframe',
@@ -260,18 +250,6 @@ $aModule = array(
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_ccard-moto_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_masterpass_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_ekonto_UseIframe',
             'type' => 'bool',
             'value' => '0'
         ),
@@ -289,61 +267,19 @@ $aModule = array(
         ),
         array(
             'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_giropay_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_idl_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_installment_UseIframe',
             'type' => 'bool',
             'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_invoice_b2b_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_invoice_b2c_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_maestro_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_moneta_UseIframe',
+            'name' => 'bQcp_invoice_UseIframe',
             'type' => 'bool',
             'value' => '0'
         ),
         array(
             'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_paypal_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_pbx_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_poli_UseIframe',
             'type' => 'bool',
             'value' => '0'
         ),
@@ -373,54 +309,23 @@ $aModule = array(
         ),
         array(
             'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_skrillwallet_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
             'name' => 'bQcp_sofortueberweisung_UseIframe',
             'type' => 'bool',
             'value' => '0'
         ),
         array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_tatrapay_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_trustly_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_voucher_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_iframe_settings',
-            'name' => 'bQcp_trustpay_UseIframe',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-
-        array(
             'group' => 'qcp_installment_invoice_settings',
             'name' => 'sQcpInvoiceProvider',
             'type' => 'select',
             'value' => 'QENTA',
-            'constraints' => 'PAYOLUTION|RATEPAY|QENTA'
+            'constraints' => 'PAYOLUTION|QENTA'
         ),
         array(
             'group' => 'qcp_installment_invoice_settings',
             'name' => 'sQcpInstallmentProvider',
             'type' => 'select',
             'value' => 'PAYOLUTION',
-            'constraints' => 'PAYOLUTION|RATEPAY'
+            'constraints' => 'PAYOLUTION'
         ),
         array(
             'group' => 'qcp_installment_invoice_settings',
@@ -436,13 +341,7 @@ $aModule = array(
         ),
         array(
             'group' => 'qcp_installment_invoice_settings',
-            'name' => 'bQcpInvoiceb2bTrustedShopsCheckbox',
-            'type' => 'bool',
-            'value' => '0'
-        ),
-        array(
-            'group' => 'qcp_installment_invoice_settings',
-            'name' => 'bQcpInvoiceb2cTrustedShopsCheckbox',
+            'name' => 'bQcpInvoiceTrustedShopsCheckbox',
             'type' => 'bool',
             'value' => '0'
         ),
