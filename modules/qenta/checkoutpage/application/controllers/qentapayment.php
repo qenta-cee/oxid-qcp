@@ -19,8 +19,8 @@ class qentapayment extends oxUBase
 
     protected $_oBasket = null;
 
-    protected static $_PAYMENT_QENTA_CHECKOUT_URL = 'api.qenta.com';
-    protected static $_PAYMENT_INIT_URL = 'https://api.qenta.com/page/init-server.php';
+    protected static $_PAYMENT_QENTA_CHECKOUT_URL = 'papi.hobex.at';
+    protected static $_PAYMENT_INIT_URL = 'https://papi.hobex.at/page/init-server.php';
 
     protected static $_PLUGIN_VERSION = '3.0.1';
 
